@@ -3,7 +3,7 @@ const db = require('../db.cjs')
 const QRCode = require('qrcode')
 
 // List all events
-router.get('/', async (req, res) => {
+router.get('/', (req, res) => {
   const { status, search } = req.query
   let sql = 'SELECT e.*, COUNT(l.id) as lead_count FROM events e LEFT JOIN leads l ON l.event_id = e.id'
   const params = []
@@ -23,7 +23,7 @@ router.get('/', async (req, res) => {
   }
   sql += ' GROUP BY e.id ORDER BY e.created_at DESC'
 
-  const events = await db.all(sql, params)
+  const events = db.prepare(sql).all(...params)
 
   // Calculate ROI for each event
   const result = events.map(event => ({
@@ -36,13 +36,13 @@ router.get('/', async (req, res) => {
 })
 
 // Get single event
-router.get('/:id', async (req, res) => {
-  const event = await db.get(`
+router.get('/:id', (req, res) => {
+  const event = db.prepare(`
     SELECT e.*, COUNT(l.id) as lead_count
     FROM events e LEFT JOIN leads l ON l.event_id = e.id
     WHERE e.id = ?
     GROUP BY e.id
-  `, [req.params.id])
+  `).get(req.params.id)
 
   if (!event) return res.status(404).json({ error: '活动不存在' })
 
@@ -50,13 +50,13 @@ router.get('/:id', async (req, res) => {
   event.roi = event.expense > 0 ? Math.round((event.budget / event.expense) * 100) : 0
 
   // Get associated leads
-  const leads = await db.all('SELECT * FROM leads WHERE event_id = ? ORDER BY created_at DESC LIMIT 10', [req.params.id])
+  const leads = db.prepare('SELECT * FROM leads WHERE event_id = ? ORDER BY created_at DESC LIMIT 10').all(req.params.id)
 
   res.json({ event, leads })
 })
 
 // Create event
-router.post('/', async (req, res) => {
+router.post('/', (req, res) => {
   const userId = req.session.userId || 1
   const { name, start_date, end_date, budget, description, form_fields } = req.body
 
@@ -64,48 +64,48 @@ router.post('/', async (req, res) => {
     return res.status(400).json({ error: '请填写必要字段' })
   }
 
-  const result = await db.run(`
+  const result = db.prepare(`
     INSERT INTO events (name, start_date, end_date, budget, description, form_fields, created_by)
     VALUES (?, ?, ?, ?, ?, ?, ?)
-  `, [name, start_date, end_date, budget || 0, description || '', JSON.stringify(form_fields || []), userId])
+  `).run(name, start_date, end_date, budget || 0, description || '', JSON.stringify(form_fields || []), userId)
 
-  const event = await db.get('SELECT * FROM events WHERE id = ?', [result.lastInsertRowid])
+  const event = db.prepare('SELECT * FROM events WHERE id = ?').get(result.lastInsertRowid)
   event.form_fields = JSON.parse(event.form_fields || '[]')
 
   res.status(201).json({ event })
 })
 
 // Update event
-router.put('/:id', async (req, res) => {
+router.put('/:id', (req, res) => {
   const { name, start_date, end_date, budget, expense, description, status, form_fields } = req.body
-  const event = await db.get('SELECT * FROM events WHERE id = ?', [req.params.id])
+  const event = db.prepare('SELECT * FROM events WHERE id = ?').get(req.params.id)
   if (!event) return res.status(404).json({ error: '活动不存在' })
 
-  await db.run(`
+  db.prepare(`
     UPDATE events SET name = ?, start_date = ?, end_date = ?, budget = ?, expense = ?,
     description = ?, status = ?, form_fields = ? WHERE id = ?
-  `, [
+  `).run(
     name || event.name, start_date || event.start_date, end_date || event.end_date,
     budget ?? event.budget, expense ?? event.expense,
     description ?? event.description, status || event.status,
     form_fields ? JSON.stringify(form_fields) : event.form_fields,
     req.params.id
-  ])
+  )
 
-  const updated = await db.get('SELECT * FROM events WHERE id = ?', [req.params.id])
+  const updated = db.prepare('SELECT * FROM events WHERE id = ?').get(req.params.id)
   updated.form_fields = JSON.parse(updated.form_fields || '[]')
   res.json({ event: updated })
 })
 
 // Delete event
-router.delete('/:id', async (req, res) => {
-  await db.run('DELETE FROM events WHERE id = ?', [req.params.id])
+router.delete('/:id', (req, res) => {
+  db.prepare('DELETE FROM events WHERE id = ?').run(req.params.id)
   res.json({ message: '活动已删除' })
 })
 
 // Generate QR code for event
 router.get('/:id/qrcode', async (req, res) => {
-  const event = await db.get('SELECT * FROM events WHERE id = ?', [req.params.id])
+  const event = db.prepare('SELECT * FROM events WHERE id = ?').get(req.params.id)
   if (!event) return res.status(404).json({ error: '活动不存在' })
 
   try {

@@ -2,7 +2,7 @@ const router = require('express').Router()
 const db = require('../db.cjs')
 
 // Get all contacts (all leads with status)
-router.get('/', async (req, res) => {
+router.get('/', (req, res) => {
   const { status, search } = req.query
   let sql = `
     SELECT l.*, e.name as event_name
@@ -22,28 +22,16 @@ router.get('/', async (req, res) => {
   }
 
   sql += ' ORDER BY l.created_at DESC'
-  const contacts = await db.all(sql, params)
+  const contacts = db.prepare(sql).all(...params)
 
-  const totalResult = await db.get('SELECT COUNT(*) as count FROM leads')
-  const total = totalResult.count
-
-  const [
-    pendingResult, contactedResult, negotiatingResult,
-    convertedResult, abandonedResult
-  ] = await Promise.all([
-    db.get("SELECT COUNT(*) as count FROM leads WHERE status = 'pending'"),
-    db.get("SELECT COUNT(*) as count FROM leads WHERE status = 'contacted'"),
-    db.get("SELECT COUNT(*) as count FROM leads WHERE status = 'negotiating'"),
-    db.get("SELECT COUNT(*) as count FROM leads WHERE status = 'converted'"),
-    db.get("SELECT COUNT(*) as count FROM leads WHERE status = 'abandoned'"),
-  ])
+  const total = db.prepare('SELECT COUNT(*) as count FROM leads').get().count
 
   const statusCounts = {
-    pending: pendingResult.count,
-    contacted: contactedResult.count,
-    negotiating: negotiatingResult.count,
-    converted: convertedResult.count,
-    abandoned: abandonedResult.count,
+    pending: db.prepare("SELECT COUNT(*) as count FROM leads WHERE status = 'pending'").get().count,
+    contacted: db.prepare("SELECT COUNT(*) as count FROM leads WHERE status = 'contacted'").get().count,
+    negotiating: db.prepare("SELECT COUNT(*) as count FROM leads WHERE status = 'negotiating'").get().count,
+    converted: db.prepare("SELECT COUNT(*) as count FROM leads WHERE status = 'converted'").get().count,
+    abandoned: db.prepare("SELECT COUNT(*) as count FROM leads WHERE status = 'abandoned'").get().count
   }
 
   res.json({ contacts, total, statusCounts })
