@@ -4,7 +4,7 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "https://marketing-assistant.pxxl.click"
+      "destination": "https://marketing-assistant.onrender.com"
     },
     { "source": "/(.*)", "destination": "/index.html" }
   ]

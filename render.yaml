@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: marketing-assistant
+    env: node
+    region: singapore
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/events
+    disks:
+      - name: sqlite-data
+        mountPath: /data
+        sizeGB: 1
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DB_PATH
+        value: /data/marketing.db
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: PORT
+        value: 10000
