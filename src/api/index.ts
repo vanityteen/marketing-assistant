@@ -46,7 +46,10 @@ export const api = {
   createEvent: (data: any) => request<ApiResponse>('/events', { method: 'POST', body: data }),
   updateEvent: (id: number | string, data: any) => request<ApiResponse>(`/events/${id}`, { method: 'PUT', body: data }),
   deleteEvent: (id: number | string) => request<ApiResponse>(`/events/${id}`, { method: 'DELETE' }),
-  getEventQR: (id: number | string) => request<ApiResponse>(`/events/${id}/qrcode`),
+  getEventQR: (id: number | string) => {
+    const origin = window.location.origin
+    return request<ApiResponse>(`/events/${id}/qrcode?origin=${encodeURIComponent(origin)}`)
+  },
 
   // Leads
   getPublicLeads: () => request<ApiResponse>('/leads/public'),

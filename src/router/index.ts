@@ -8,6 +8,7 @@ const routes = [
   { path: '/leads/personal', name: 'leads-personal', component: () => import('@/views/LeadPersonalView.vue') },
   { path: '/contacts', name: 'contacts', component: () => import('@/views/ContactsView.vue') },
   { path: '/settings', name: 'settings', component: () => import('@/views/SettingsView.vue') },
+  { path: '/submit/:id', name: 'submit-form', component: () => import('@/views/SubmitFormView.vue') },
 ]
 
 const router = createRouter({
