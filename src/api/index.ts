@@ -1,4 +1,6 @@
-const BASE = '/api'
+// In dev, Vite proxies /api to the backend (localhost:3000).
+// In production, set VITE_API_BASE to the backend URL (e.g. https://api.example.com).
+const BASE = import.meta.env.VITE_API_BASE || '/api'
 
 interface RequestOptions {
   method?: string
