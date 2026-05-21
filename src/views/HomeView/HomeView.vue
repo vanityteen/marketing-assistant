@@ -4,9 +4,7 @@
     <div class="header home-header">
       <h1>市场活动助手</h1>
       <div class="search-box">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-        </svg>
+        <Search />
         <input type="text" v-model="search" placeholder="搜索活动..." @input="onSearch" />
       </div>
     </div>
@@ -21,9 +19,7 @@
     <!-- Event List -->
     <div v-if="loading" class="loading-text">加载中...</div>
     <div v-else-if="events.length === 0" class="empty-state">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
-      </svg>
+      <Calendar />
       <div>暂无活动</div>
     </div>
     <div v-else style="padding-bottom: 100px;">
@@ -32,9 +28,7 @@
 
     <!-- FAB -->
     <button class="create-btn" @click="$router.push('/event/create')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-      </svg>
+      <Plus />
     </button>
   </div>
 </template>
@@ -43,6 +37,7 @@
 import { ref, onMounted } from 'vue'
 import { useEventStore } from '@/stores/event'
 import EventCard from '@/components/EventCard.vue'
+import { Search, Calendar, Plus } from 'lucide-vue-next'
 
 const eventStore = useEventStore()
 

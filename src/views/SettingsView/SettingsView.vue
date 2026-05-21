@@ -1,9 +1,7 @@
 <template>
   <div>
     <div class="header">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="back-icon" @click="$router.push('/')">
-        <path d="M15 19l-7-7 7-7"/>
-      </svg>
+      <ChevronLeft class="back-icon" @click="$router.push('/')" />
       <h1>设置</h1>
       <div class="spacer"></div>
     </div>
@@ -20,34 +18,28 @@
     <!-- Menu -->
     <div class="menu-section">
       <div class="menu-item" @click="$router.push('/')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M16 11V7a4 4 0 0 0-8 0v4M5 9h14l1 12H4L5 9"/>
-        </svg>
+        <ShoppingBag />
         <div class="text">
           <div class="title">我的活动</div>
           <div class="desc">查看和管理我的活动</div>
         </div>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="arrow"><path d="M9 18l6-6-6-6"/></svg>
+        <ChevronRight class="arrow" />
       </div>
       <div class="menu-item" @click="$router.push('/leads/personal')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-        </svg>
+        <Users />
         <div class="text">
           <div class="title">我的线索</div>
           <div class="desc">查看我的线索和客户</div>
         </div>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="arrow"><path d="M9 18l6-6-6-6"/></svg>
+        <ChevronRight class="arrow" />
       </div>
       <div class="menu-item" @click="showToast('通知设置即将上线')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/>
-        </svg>
+        <Clock />
         <div class="text">
           <div class="title">通知设置</div>
           <div class="desc">管理通知和提醒</div>
         </div>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="arrow"><path d="M9 18l6-6-6-6"/></svg>
+        <ChevronRight class="arrow" />
       </div>
     </div>
 
@@ -81,6 +73,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { useToast } from '@/composables/useToast'
+import { ChevronLeft, ShoppingBag, Users, Clock, ChevronRight } from 'lucide-vue-next'
 
 const router = useRouter()
 const userStore = useUserStore()

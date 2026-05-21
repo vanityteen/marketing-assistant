@@ -2,9 +2,7 @@
   <div>
     <!-- Header -->
     <div class="header">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="back-icon" @click="$router.push('/')">
-        <path d="M15 19l-7-7 7-7"/>
-      </svg>
+      <ChevronLeft class="back-icon" @click="$router.push('/')" />
       <h1>创建活动</h1>
       <span class="btn" @click="submit">保存</span>
     </div>
@@ -50,6 +48,7 @@ import { useRouter } from 'vue-router'
 import { useEventStore } from '@/stores/event'
 import { useToast } from '@/composables/useToast'
 import FieldConfig from '@/components/FieldConfig.vue'
+import { ChevronLeft } from 'lucide-vue-next'
 
 const router = useRouter()
 const eventStore = useEventStore()

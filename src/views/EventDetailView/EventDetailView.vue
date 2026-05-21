@@ -2,9 +2,7 @@
   <div>
     <!-- Header -->
     <div class="header">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="back-icon" @click="$router.push('/')">
-        <path d="M15 19l-7-7 7-7"/>
-      </svg>
+      <ChevronLeft class="back-icon" @click="$router.push('/')" />
       <h1>活动详情</h1>
       <div class="spacer"></div>
     </div>
@@ -16,7 +14,7 @@
         <div class="qr-code">
           <img v-if="qrCode" :src="qrCode" alt="活动二维码" />
           <div v-else class="placeholder">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="3"/><line x1="15" y1="5" x2="21" y2="5"/><line x1="15" y1="19" x2="21" y2="19"/><line x1="5" y1="15" x2="5" y2="21"/></svg>
+            <Table />
             <span>活动二维码</span>
           </div>
         </div>
@@ -71,6 +69,7 @@ import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useEventStore } from '@/stores/event'
 import StatusBadge from '@/components/StatusBadge.vue'
+import { ChevronLeft, Table } from 'lucide-vue-next'
 
 const route = useRoute()
 const eventStore = useEventStore()

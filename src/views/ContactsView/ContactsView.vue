@@ -1,25 +1,19 @@
 <template>
   <div>
     <div class="header">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="back-icon" @click="$router.push('/')">
-        <path d="M15 19l-7-7 7-7"/>
-      </svg>
+      <ChevronLeft class="back-icon" @click="$router.push('/')" />
       <h1>通讯录中心</h1>
       <div class="spacer"></div>
     </div>
 
     <div class="contact-search">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-      </svg>
+      <Search />
       <input type="text" v-model="search" placeholder="搜索线索/客户..." @input="onSearch" />
     </div>
 
     <div class="special-tab">
       <button @click="switchFilter('all')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
-        </svg>
+        <CircleCheckBig />
         全部线索 ({{ total }}条)
       </button>
     </div>
@@ -30,9 +24,7 @@
 
     <div v-if="loading" class="loading-text">加载中...</div>
     <div v-else-if="contacts.length === 0" class="empty-state">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-      </svg>
+      <Users />
       <div>暂无联系人</div>
     </div>
     <div v-else class="contact-list">
@@ -52,6 +44,7 @@
 import { ref, onMounted } from 'vue'
 import { api } from '@/api'
 import StatusBadge from '@/components/StatusBadge.vue'
+import { ChevronLeft, Search, CircleCheckBig, Users } from 'lucide-vue-next'
 
 const search = ref('')
 const currentFilter = ref('all')

@@ -1,9 +1,7 @@
 <template>
   <div class="field-section">
     <div class="section-title">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7.5 18H3v-3.5a2.121 2.121 0 0 1 3-3z"/>
-      </svg>
+      <Settings />
       表单字段配置
     </div>
 
@@ -40,9 +38,7 @@
     </div>
 
     <div class="add-field-btn" @click="showTypePicker = true">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-      </svg>
+      <Plus />
       添加字段
     </div>
 
@@ -56,10 +52,9 @@
         <div class="modal-body">
           <div class="field-type-list" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
             <div v-for="t in fieldTypes" :key="t.type" class="field-type-item" @click="addField(t.type)" style="padding: 16px; background: #f8f9fa; border-radius: 12px; text-align: center; cursor: pointer;">
-              <svg v-if="t.type === 'text'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 32px; height: 32px; margin-bottom: 8px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg>
-              <svg v-if="t.type === 'textarea'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 32px; height: 32px; margin-bottom: 8px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-              <svg v-if="t.type === 'select'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 32px; height: 32px; margin-bottom: 8px;"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-              <svg v-if="t.type === 'checkbox'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 32px; height: 32px; margin-bottom: 8px;"><polyline points="20 6 9 17 4 12"/></svg>
+              <FileText v-if="t.type === 'text' || t.type === 'textarea'" style="width: 32px; height: 32px; margin-bottom: 8px;" />
+              <Search v-if="t.type === 'select'" style="width: 32px; height: 32px; margin-bottom: 8px;" />
+              <Check v-if="t.type === 'checkbox'" style="width: 32px; height: 32px; margin-bottom: 8px;" />
               <div class="label" style="font-size: 14px; font-weight: 500;">{{ t.label }}</div>
               <div class="desc" style="font-size: 12px; color: var(--text-muted);">{{ t.desc }}</div>
             </div>
@@ -72,6 +67,7 @@
 
 <script setup>
 import { ref } from 'vue'
+import { Settings, Plus, FileText, Search, Check } from 'lucide-vue-next'
 
 const props = defineProps({
   modelValue: { type: Array, default: () => [] },

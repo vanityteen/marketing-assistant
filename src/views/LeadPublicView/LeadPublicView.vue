@@ -2,9 +2,7 @@
   <div>
     <!-- Header -->
     <div class="header">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="back-icon" @click="$router.push('/')">
-        <path d="M15 19l-7-7 7-7"/>
-      </svg>
+      <ChevronLeft class="back-icon" @click="$router.push('/')" />
       <h1>公共线索池</h1>
       <div class="spacer"></div>
     </div>
@@ -28,9 +26,7 @@
     <!-- Lead List -->
     <div v-if="loading" class="loading-text">加载中...</div>
     <div v-else-if="leads.length === 0" class="empty-state">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
-      </svg>
+      <Users />
       <div>暂无可用线索</div>
     </div>
     <div v-else class="lead-list">
@@ -54,6 +50,7 @@ import { ref, reactive, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useLeadStore } from '@/stores/lead'
 import { useToast } from '@/composables/useToast'
+import { ChevronLeft, Users } from 'lucide-vue-next'
 
 const router = useRouter()
 const leadStore = useLeadStore()

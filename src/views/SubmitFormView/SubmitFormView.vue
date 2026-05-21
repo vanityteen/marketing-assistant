@@ -3,14 +3,14 @@
     <div v-if="loading" class="loading-text">加载中...</div>
 
     <div v-else-if="error" class="empty-state">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+      <CircleX />
       <p>{{ error }}</p>
     </div>
 
     <!-- Success State -->
     <div v-else-if="submitted" class="success-section">
       <div class="success-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        <Check :stroke-width="2.5" />
       </div>
       <h2 class="success-title">提交成功</h2>
       <p class="success-desc">感谢您的参与，信息已提交成功！</p>
@@ -21,7 +21,7 @@
       <!-- Header Banner -->
       <div class="submit-header">
         <div class="submit-header-bg">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="submit-header-icon"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          <Monitor :stroke-width="1.5" class="submit-header-icon" />
           <h1>{{ event.name }}</h1>
           <p>请填写信息参与活动</p>
         </div>
@@ -79,6 +79,7 @@
 import { ref, reactive, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { api } from '@/api'
+import { CircleX, Check, Monitor } from 'lucide-vue-next'
 
 const route = useRoute()
 
