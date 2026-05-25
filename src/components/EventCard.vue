@@ -2,13 +2,13 @@
   <div class="event-card-wrapper">
     <!-- Mobile: swipe-reveal actions (behind the card) -->
     <div class="swipe-delete-action" :class="{ visible: showSwipeDelete }">
-      <button class="swipe-action-btn" @click.stop="handleEdit">
-        <Edit3 :size="18" />
-        <span>编辑</span>
-      </button>
       <button class="swipe-action-btn swipe-action-btn-danger" @click.stop="handleDelete">
         <Trash2 :size="18" />
         <span>删除</span>
+      </button>
+      <button class="swipe-action-btn" @click.stop="handleEdit">
+        <Edit3 :size="18" />
+        <span>编辑</span>
       </button>
     </div>
 
@@ -128,7 +128,7 @@ const showSwipeDelete = ref(false)
 const isHorizontalSwipe = ref(false)
 const isDragging = ref(false)
 const SWIPE_THRESHOLD = 70
-const MAX_SWIPE = 100
+const MAX_SWIPE = 160
 
 function onTouchStart(e) {
   touchStartX.value = e.touches[0].clientX
@@ -235,7 +235,6 @@ function formatNumber(n) {
 <style scoped>
 .event-card-wrapper {
   position: relative;
-  overflow: hidden;
   border-radius: var(--radius);
 }
 
@@ -263,6 +262,12 @@ function formatNumber(n) {
 
 @media (min-width: 768px) {
   .swipe-delete-action {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .card-dropdown {
     display: none;
   }
 }
