@@ -3,8 +3,8 @@
     <!-- Header -->
     <div class="header">
       <ChevronLeft class="back-icon" @click="$router.push('/')" />
-      <h1>创建活动</h1>
-      <span class="btn" @click="submit">保存</span>
+      <h1>{{ isEdit ? '编辑活动' : '创建活动' }}</h1>
+      <span class="btn" @click="submit">{{ isEdit ? '保存' : '保存' }}</span>
     </div>
 
     <div class="form-section">
@@ -38,21 +38,24 @@
       <FieldConfig v-model="form.form_fields" />
     </div>
 
-    <button class="action-btn" @click="submit">创建活动并生成二维码</button>
+    <button class="action-btn" @click="submit">{{ isEdit ? '保存修改' : '创建活动并生成二维码' }}</button>
   </div>
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
-import { useRouter } from 'vue-router'
+import { reactive, computed, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useEventStore } from '@/stores/event'
 import { useToast } from '@/composables/useToast'
 import FieldConfig from '@/components/FieldConfig.vue'
 import { ChevronLeft } from 'lucide-vue-next'
 
+const route = useRoute()
 const router = useRouter()
 const eventStore = useEventStore()
 const { showToast } = useToast()
+
+const isEdit = computed(() => !!route.params.id)
 
 const form = reactive({
   name: '',
@@ -63,13 +66,34 @@ const form = reactive({
   form_fields: [],
 })
 
+onMounted(async () => {
+  if (isEdit.value) {
+    const res = await eventStore.fetchEvent(route.params.id)
+    if (res.event) {
+      const e = res.event
+      form.name = e.name || ''
+      form.start_date = e.start_date ? e.start_date.slice(0, 10) : ''
+      form.end_date = e.end_date ? e.end_date.slice(0, 10) : ''
+      form.budget = e.budget || 0
+      form.description = e.description || ''
+      form.form_fields = (e.form_fields || []).map(f => ({
+        _key: Date.now() + Math.random(),
+        label: f.name || '',
+        type: f.type || 'text',
+        required: f.required || false,
+        options: f.options || '',
+      }))
+    }
+  }
+})
+
 async function submit() {
   if (!form.name || !form.start_date || !form.end_date) {
     showToast('请填写必要字段')
     return
   }
 
-  const res = await eventStore.createEvent({
+  const payload = {
     name: form.name,
     start_date: form.start_date,
     end_date: form.end_date,
@@ -81,10 +105,17 @@ async function submit() {
       required: f.required,
       options: f.options,
     })),
-  })
+  }
+
+  let res
+  if (isEdit.value) {
+    res = await eventStore.updateEvent(route.params.id, payload)
+  } else {
+    res = await eventStore.createEvent(payload)
+  }
 
   if (res.event) {
-    showToast('活动创建成功')
+    showToast(isEdit.value ? '活动已更新' : '活动创建成功')
     setTimeout(() => router.push('/'), 1500)
   } else if (res.error) {
     showToast(res.error)

@@ -1,8 +1,12 @@
 <template>
   <div class="event-card-wrapper">
-    <!-- Mobile: swipe-reveal delete action (behind the card) -->
+    <!-- Mobile: swipe-reveal actions (behind the card) -->
     <div class="swipe-delete-action" :class="{ visible: showSwipeDelete }">
-      <button class="swipe-delete-btn" @click.stop="handleDelete">
+      <button class="swipe-action-btn" @click.stop="handleEdit">
+        <Edit3 :size="18" />
+        <span>编辑</span>
+      </button>
+      <button class="swipe-action-btn swipe-action-btn-danger" @click.stop="handleDelete">
         <Trash2 :size="18" />
         <span>删除</span>
       </button>
@@ -17,10 +21,22 @@
       @touchmove="onTouchMove"
       @touchend="onTouchEnd"
     >
-      <!-- PC: top-right delete button (inside card, so clipped by card border-radius) -->
-      <button class="card-delete-btn" @click.stop="handleDelete" title="删除活动">
-        <Trash2 :size="14" />
-      </button>
+      <!-- PC: top-right dropdown menu (Edit / Delete) -->
+      <div class="card-dropdown" @click.stop>
+        <button class="dropdown-trigger" @click="showDropdown = !showDropdown" title="更多操作">
+          <MoreHorizontal :size="16" />
+        </button>
+        <div v-if="showDropdown" class="dropdown-menu" @click="showDropdown = false">
+          <div class="dropdown-item" @click="handleEdit">
+            <Edit3 :size="14" />
+            <span>编辑</span>
+          </div>
+          <div class="dropdown-item dropdown-item-danger" @click="handleDelete">
+            <Trash2 :size="14" />
+            <span>删除</span>
+          </div>
+        </div>
+      </div>
 
       <StatusBadge :status="event.status" />
       <h3>{{ event.name }}</h3>
@@ -48,10 +64,10 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import StatusBadge from './StatusBadge.vue'
-import { Calendar, DollarSign, BarChart, Table, Trash2 } from 'lucide-vue-next'
+import { Calendar, DollarSign, BarChart, Table, Trash2, MoreHorizontal, Edit3 } from 'lucide-vue-next'
 import { useEventStore } from '@/stores/event'
 import { useToast } from '@/composables/useToast'
 
@@ -65,6 +81,44 @@ const emit = defineEmits(['deleted'])
 const router = useRouter()
 const eventStore = useEventStore()
 const toast = useToast()
+
+// Dropdown state
+const showDropdown = ref(false)
+let skipNextClose = false
+
+// Close dropdown on click outside, and listen for other cards' dropdowns
+watch(showDropdown, (val) => {
+  if (val) {
+    // Notify other cards to close their dropdowns (but not ourselves)
+    skipNextClose = true
+    document.dispatchEvent(new CustomEvent('close-event-dropdown'))
+    setTimeout(() => { skipNextClose = false }, 0)
+
+    const handler = () => {
+      showDropdown.value = false
+      document.removeEventListener('click', handler)
+    }
+    // Wait for next tick so the current click event doesn't close it
+    setTimeout(() => document.addEventListener('click', handler), 0)
+  }
+})
+
+function onOtherDropdownOpen() {
+  if (skipNextClose) return
+  showDropdown.value = false
+}
+
+onMounted(() => {
+  document.addEventListener('close-event-dropdown', onOtherDropdownOpen)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('close-event-dropdown', onOtherDropdownOpen)
+})
+
+function handleEdit() {
+  router.push(`/event/${props.event.id}/edit`)
+}
 
 // Swipe state
 const touchStartX = ref(0)
@@ -185,21 +239,22 @@ function formatNumber(n) {
   border-radius: var(--radius);
 }
 
-/* ─── Mobile swipe delete area (behind the card) ─── */
+/* ─── Mobile swipe action area (behind the card) ─── */
 .swipe-delete-action {
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
-  width: 100px;
+  width: 160px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #ef4444, #dc2626);
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
   border-radius: 0 var(--radius) var(--radius) 0;
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.25s ease, visibility 0.25s ease;
+  gap: 0;
 }
 .swipe-delete-action.visible {
   opacity: 1;
@@ -212,7 +267,8 @@ function formatNumber(n) {
   }
 }
 
-.swipe-delete-btn {
+.swipe-action-btn {
+  flex: 1;
   background: none;
   border: none;
   color: #fff;
@@ -222,12 +278,18 @@ function formatNumber(n) {
   gap: 4px;
   cursor: pointer;
   font-size: 12px;
-  padding: 12px;
-  transition: transform 0.15s;
+  padding: 12px 0;
+  transition: transform 0.15s, background 0.15s;
   line-height: 1;
+  height: 100%;
+  justify-content: center;
+  -webkit-tap-highlight-color: transparent;
 }
-.swipe-delete-btn:active {
+.swipe-action-btn:active {
   transform: scale(0.92);
+}
+.swipe-action-btn-danger {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
 }
 
 /* ─── Swipeable card ─── */
@@ -243,19 +305,23 @@ function formatNumber(n) {
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   user-select: none;
   -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 .event-card.dragging {
   transition: none;
 }
 
-/* ─── PC delete button (inside card) ─── */
-.card-delete-btn {
+/* ─── PC dropdown (inside card) ─── */
+.card-dropdown {
   position: absolute;
-  top: 12px;
-  right: 12px;
-  z-index: 2;
-  width: 28px;
-  height: 28px;
+  top: 8px;
+  right: 8px;
+  z-index: 3;
+}
+
+.dropdown-trigger {
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   border: none;
   background: var(--bg-white);
@@ -264,20 +330,49 @@ function formatNumber(n) {
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 0;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
-  transition: opacity 0.2s, color 0.2s, background 0.2s, transform 0.2s;
+  transition: color 0.2s, background 0.2s, transform 0.2s;
 }
-.event-card:hover .card-delete-btn {
-  opacity: 1;
-}
-.card-delete-btn:hover {
-  background: #fee2e2;
-  color: #ef4444;
+.dropdown-trigger:hover {
+  background: #f5f5f5;
+  color: #666;
   transform: scale(1.1);
 }
-.card-delete-btn:active {
+.dropdown-trigger:active {
   transform: scale(0.95);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 4px;
+  min-width: 120px;
+  background: var(--bg-white);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  z-index: 10;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  color: var(--text);
+  transition: background 0.15s;
+}
+.dropdown-item:hover {
+  background: #f5f5f5;
+}
+.dropdown-item-danger {
+  color: #ef4444;
+}
+.dropdown-item-danger:hover {
+  background: #fef2f2;
 }
 
 .event-card .status-badge {

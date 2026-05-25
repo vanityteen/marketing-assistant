@@ -20,8 +20,8 @@ const route = useRoute()
 const { toastState } = useToast()
 
 const showNav = computed(() => {
-  const hiddenRoutes = ['/event/create', '/submit']
-  return !hiddenRoutes.some(r => route.path.startsWith(r))
+  return !['/event/create', '/submit'].some(r => route.path.startsWith(r))
+    && !route.path.endsWith('/edit')
 })
 </script>
 
