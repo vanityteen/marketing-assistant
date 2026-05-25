@@ -115,3 +115,108 @@ async function handleLogout() {
 
 onMounted(load)
 </script>
+
+<style scoped>
+.user-section {
+  display: flex;
+  align-items: center;
+  padding: 20px 16px;
+  background: var(--gradient);
+  color: #fff;
+}
+.user-avatar.large {
+  width: 60px; height: 60px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 600;
+}
+.user-info { margin-left: 16px; }
+.user-info .user-name { font-size: 18px; font-weight: 600; color: #fff; }
+.user-info .user-role { font-size: 14px; opacity: 0.8; color: #fff; }
+
+.menu-section { padding: 16px; }
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  background: var(--bg-white);
+  border-radius: var(--radius);
+  margin-bottom: 12px;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+}
+.menu-item svg:first-child { width: 22px; height: 22px; color: var(--primary); flex-shrink: 0; }
+.menu-item .text { flex: 1; margin-left: 14px; }
+.menu-item .title { font-size: 15px; font-weight: 500; }
+.menu-item .desc { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+.menu-item .arrow { width: 16px; height: 16px; opacity: 0.4; color: var(--text-muted); }
+
+.setting-card {
+  padding: 16px;
+  background: var(--bg-white);
+  border-radius: var(--radius);
+  margin: 0 16px 12px;
+  box-shadow: var(--shadow);
+}
+.setting-card .card-title { font-size: 15px; font-weight: 500; margin-bottom: 16px; }
+
+.recovery-setting {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+}
+.recovery-setting .label { font-size: 14px; color: var(--text-secondary); }
+.recovery-setting .options { display: flex; gap: 8px; }
+.recovery-setting .option {
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  background: #f0f0f0;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border: none;
+}
+.recovery-setting .option.active {
+  background: var(--primary);
+  color: #fff;
+}
+
+.role-section { padding: 16px; }
+.role-section .section-title { font-size: 15px; font-weight: 500; margin-bottom: 12px; }
+.role-options { display: flex; gap: 12px; }
+.role-options button {
+  flex: 1;
+  padding: 14px;
+  border-radius: 10px;
+  border: 2px solid #e0e0e0;
+  font-size: 14px;
+  cursor: pointer;
+  background: var(--bg-white);
+  color: var(--text-secondary);
+}
+.role-options button.active {
+  border-color: var(--primary);
+  background: #f5f7ff;
+  color: var(--primary);
+}
+
+.logout-btn {
+  margin: 20px 16px;
+  padding: 14px;
+  background: #f5f5f5;
+  color: var(--text-secondary);
+  border-radius: var(--radius);
+  text-align: center;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  display: block;
+  width: calc(100% - 32px);
+}
+</style>

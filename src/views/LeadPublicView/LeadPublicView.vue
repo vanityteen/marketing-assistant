@@ -99,3 +99,28 @@ function maskPhone(phone) {
 
 onMounted(load)
 </script>
+
+<style scoped>
+.stats-bar {
+  display: flex;
+  justify-content: space-around;
+  padding: 16px;
+  background: var(--gradient);
+  color: #fff;
+}
+.stat-item { text-align: center; }
+.stat-item .num { font-size: 24px; font-weight: 600; }
+.stat-item .label { font-size: 12px; opacity: 0.8; margin-top: 4px; }
+
+.claim-btn {
+  padding: 10px 20px;
+  background: var(--gradient);
+  color: #fff;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  white-space: nowrap;
+}
+</style>

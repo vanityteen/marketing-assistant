@@ -129,3 +129,57 @@ function updateField(index, key, value) {
   emit('update:modelValue', next)
 }
 </script>
+
+<style scoped>
+.field-section { margin-top: 24px; }
+.field-section .section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+.section-title svg { width: 18px; height: 18px; color: var(--primary); }
+
+.field-card {
+  background: #f8f9fa;
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 12px;
+}
+.field-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.field-name { font-size: 14px; font-weight: 500; }
+.field-type { font-size: 12px; color: var(--text-muted); }
+.field-actions { display: flex; gap: 8px; }
+.field-actions button {
+  width: 28px; height: 28px;
+  border: none;
+  border-radius: 6px;
+  background: var(--bg-white);
+  font-size: 14px;
+  cursor: pointer;
+  color: var(--text-secondary);
+}
+.field-card .form-item { margin-bottom: 12px; }
+.field-card .form-item:last-child { margin-bottom: 0; }
+
+.add-field-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px;
+  border: 2px dashed #ddd;
+  border-radius: var(--radius);
+  margin-top: 12px;
+  cursor: pointer;
+  color: var(--text-muted);
+}
+.add-field-btn svg { width: 20px; height: 20px; }
+</style>

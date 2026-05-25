@@ -138,3 +138,25 @@ function formatDate(d) {
 
 onMounted(load)
 </script>
+
+<style scoped>
+.stats-row {
+  display: flex;
+  justify-content: space-around;
+  padding: 16px;
+  background: #f8f9fa;
+}
+.stats-row .stat-item .num { color: var(--text); }
+
+.follow-btn {
+  padding: 10px 20px;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  background: #fff;
+  white-space: nowrap;
+}
+</style>
