@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="view-root">
     <!-- Header -->
     <div class="header">
       <ChevronLeft class="back-icon" @click="$router.push('/')" />
@@ -7,38 +7,40 @@
       <span class="btn" @click="submit">{{ isEdit ? '保存' : '保存' }}</span>
     </div>
 
-    <div class="form-section">
-      <div class="form-item">
-        <label>活动名称 *</label>
-        <input type="text" v-model="form.name" placeholder="请输入活动名称" />
-      </div>
-
-      <div class="date-row">
+    <div class="scroll-area">
+      <div class="form-section">
         <div class="form-item">
-          <label>开始时间 *</label>
-          <input type="date" v-model="form.start_date" />
+          <label>活动名称 *</label>
+          <input type="text" v-model="form.name" placeholder="请输入活动名称" />
         </div>
+
+        <div class="date-row">
+          <div class="form-item">
+            <label>开始时间 *</label>
+            <input type="date" v-model="form.start_date" />
+          </div>
+          <div class="form-item">
+            <label>结束时间 *</label>
+            <input type="date" v-model="form.end_date" />
+          </div>
+        </div>
+
         <div class="form-item">
-          <label>结束时间 *</label>
-          <input type="date" v-model="form.end_date" />
+          <label>预算金额 *</label>
+          <input type="number" v-model.number="form.budget" placeholder="请输入预算金额" />
         </div>
+
+        <div class="form-item">
+          <label>活动描述</label>
+          <textarea v-model="form.description" placeholder="请输入活动描述"></textarea>
+        </div>
+
+        <!-- Field Configuration -->
+        <FieldConfig v-model="form.form_fields" />
       </div>
 
-      <div class="form-item">
-        <label>预算金额 *</label>
-        <input type="number" v-model.number="form.budget" placeholder="请输入预算金额" />
-      </div>
-
-      <div class="form-item">
-        <label>活动描述</label>
-        <textarea v-model="form.description" placeholder="请输入活动描述"></textarea>
-      </div>
-
-      <!-- Field Configuration -->
-      <FieldConfig v-model="form.form_fields" />
+      <button class="action-btn" @click="submit">{{ isEdit ? '保存修改' : '创建活动并生成二维码' }}</button>
     </div>
-
-    <button class="action-btn" @click="submit">{{ isEdit ? '保存修改' : '创建活动并生成二维码' }}</button>
   </div>
 </template>
 

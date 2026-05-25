@@ -1,70 +1,72 @@
 <template>
-  <div>
+  <div class="view-root">
     <div class="header">
       <ChevronLeft class="back-icon" @click="$router.push('/')" />
       <h1>设置</h1>
       <div class="spacer"></div>
     </div>
 
-    <!-- User Section -->
-    <div v-if="userStore.user" class="user-section">
-      <div class="user-avatar large">{{ userStore.user.name?.charAt(0) || '?' }}</div>
-      <div class="user-info">
-        <div class="user-name">{{ userStore.user.name }}</div>
-        <div class="user-role">{{ roleLabel }}</div>
-      </div>
-    </div>
-
-    <!-- Menu -->
-    <div class="menu-section">
-      <div class="menu-item" @click="$router.push('/')">
-        <ShoppingBag />
-        <div class="text">
-          <div class="title">我的活动</div>
-          <div class="desc">查看和管理我的活动</div>
-        </div>
-        <ChevronRight class="arrow" />
-      </div>
-      <div class="menu-item" @click="$router.push('/leads/personal')">
-        <Users />
-        <div class="text">
-          <div class="title">我的线索</div>
-          <div class="desc">查看我的线索和客户</div>
-        </div>
-        <ChevronRight class="arrow" />
-      </div>
-      <div class="menu-item" @click="showToast('通知设置即将上线')">
-        <Clock />
-        <div class="text">
-          <div class="title">通知设置</div>
-          <div class="desc">管理通知和提醒</div>
-        </div>
-        <ChevronRight class="arrow" />
-      </div>
-    </div>
-
-    <!-- Recovery Days -->
-    <div class="setting-card">
-      <div class="card-title">线索自动回收设置</div>
-      <div class="recovery-setting">
-        <span class="label">回收天数</span>
-        <div class="options">
-          <button v-for="d in [3, 7, 14]" :key="d" class="option" :class="{ active: selectedRecovery === d }" @click="setRecovery(d)">{{ d }}天</button>
+    <div class="scroll-area">
+      <!-- User Section -->
+      <div v-if="userStore.user" class="user-section">
+        <div class="user-avatar large">{{ userStore.user.name?.charAt(0) || '?' }}</div>
+        <div class="user-info">
+          <div class="user-name">{{ userStore.user.name }}</div>
+          <div class="user-role">{{ roleLabel }}</div>
         </div>
       </div>
-    </div>
 
-    <!-- Role Switch -->
-    <div class="role-section">
-      <div class="section-title">角色切换</div>
-      <div class="role-options">
-        <button :class="{ active: currentRole === 'marketer' }" @click="switchRole('marketer')">市场人员</button>
-        <button :class="{ active: currentRole === 'salesperson' }" @click="switchRole('salesperson')">销售人员</button>
+      <!-- Menu -->
+      <div class="menu-section">
+        <div class="menu-item" @click="$router.push('/')">
+          <ShoppingBag />
+          <div class="text">
+            <div class="title">我的活动</div>
+            <div class="desc">查看和管理我的活动</div>
+          </div>
+          <ChevronRight class="arrow" />
+        </div>
+        <div class="menu-item" @click="$router.push('/leads/personal')">
+          <Users />
+          <div class="text">
+            <div class="title">我的线索</div>
+            <div class="desc">查看我的线索和客户</div>
+          </div>
+          <ChevronRight class="arrow" />
+        </div>
+        <div class="menu-item" @click="showToast('通知设置即将上线')">
+          <Clock />
+          <div class="text">
+            <div class="title">通知设置</div>
+            <div class="desc">管理通知和提醒</div>
+          </div>
+          <ChevronRight class="arrow" />
+        </div>
       </div>
-    </div>
 
-    <!-- Logout -->
-    <button class="logout-btn" @click="handleLogout">退出登录</button>
+      <!-- Recovery Days -->
+      <div class="setting-card">
+        <div class="card-title">线索自动回收设置</div>
+        <div class="recovery-setting">
+          <span class="label">回收天数</span>
+          <div class="options">
+            <button v-for="d in [3, 7, 14]" :key="d" class="option" :class="{ active: selectedRecovery === d }" @click="setRecovery(d)">{{ d }}天</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Role Switch -->
+      <div class="role-section">
+        <div class="section-title">角色切换</div>
+        <div class="role-options">
+          <button :class="{ active: currentRole === 'marketer' }" @click="switchRole('marketer')">市场人员</button>
+          <button :class="{ active: currentRole === 'salesperson' }" @click="switchRole('salesperson')">销售人员</button>
+        </div>
+      </div>
+
+      <!-- Logout -->
+      <button class="logout-btn" @click="handleLogout">退出登录</button>
+    </div>
   </div>
 </template>
 

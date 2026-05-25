@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="view-root">
     <!-- Header -->
     <div class="header home-header">
       <h1>市场活动助手</h1>
@@ -9,21 +9,23 @@
       </div>
     </div>
 
-    <!-- Filter Tabs -->
-    <div class="filter-tabs">
-      <button v-for="f in filters" :key="f.value" :class="{ active: currentFilter === f.value }" @click="setFilter(f.value)">
-        {{ f.label }}
-      </button>
-    </div>
+    <div class="scroll-area">
+      <!-- Filter Tabs -->
+      <div class="filter-tabs">
+        <button v-for="f in filters" :key="f.value" :class="{ active: currentFilter === f.value }" @click="setFilter(f.value)">
+          {{ f.label }}
+        </button>
+      </div>
 
-    <!-- Event List -->
-    <div v-if="loading" class="loading-text">加载中...</div>
-    <div v-else-if="events.length === 0" class="empty-state">
-      <Calendar />
-      <div>暂无活动</div>
-    </div>
-    <div v-else style="padding-bottom: 100px; display: flex; flex-direction: column; row-gap: 12px;" class="events-list">
-      <EventCard v-for="event in events" :key="event.id" :event="event" :showQR="event.status === 'active'" @deleted="onEventDeleted" />
+      <!-- Event List -->
+      <div v-if="loading" class="loading-text">加载中...</div>
+      <div v-else-if="events.length === 0" class="empty-state">
+        <Calendar />
+        <div>暂无活动</div>
+      </div>
+      <div v-else style="display: flex; flex-direction: column; row-gap: 12px;" class="events-list">
+        <EventCard v-for="event in events" :key="event.id" :event="event" :showQR="event.status === 'active'" @deleted="onEventDeleted" />
+      </div>
     </div>
 
     <!-- FAB -->
@@ -83,8 +85,15 @@ onMounted(loadEvents)
   color: #fff;
   padding: 20px 16px;
   border-bottom: none;
+  flex-shrink: 0;
 }
 .home-header h1 { font-size: 20px; color: #fff; }
+
+.events-list {
+  display: flex;
+  flex-direction: column;
+  row-gap: 12px;
+}
 
 .search-box {
   background: rgba(255,255,255,0.2);

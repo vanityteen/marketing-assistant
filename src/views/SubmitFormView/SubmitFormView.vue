@@ -1,19 +1,25 @@
 <template>
-  <div>
-    <div v-if="loading" class="loading-text">加载中...</div>
+  <div class="view-root">
+    <div v-if="loading" class="scroll-area scroll-center">
+      <div class="loading-text">加载中...</div>
+    </div>
 
-    <div v-else-if="error" class="empty-state">
-      <CircleX />
-      <p>{{ error }}</p>
+    <div v-else-if="error" class="scroll-area scroll-center">
+      <div class="empty-state">
+        <CircleX />
+        <p>{{ error }}</p>
+      </div>
     </div>
 
     <!-- Success State -->
-    <div v-else-if="submitted" class="success-section">
-      <div class="success-icon">
-        <Check :stroke-width="2.5" />
+    <div v-else-if="submitted" class="scroll-area scroll-center">
+      <div class="success-section">
+        <div class="success-icon">
+          <Check :stroke-width="2.5" />
+        </div>
+        <h2 class="success-title">提交成功</h2>
+        <p class="success-desc">感谢您的参与，信息已提交成功！</p>
       </div>
-      <h2 class="success-title">提交成功</h2>
-      <p class="success-desc">感谢您的参与，信息已提交成功！</p>
     </div>
 
     <!-- Form -->
@@ -27,49 +33,51 @@
         </div>
       </div>
 
-      <div class="form-section">
-        <div v-for="field in event.form_fields" :key="field.name" class="form-item">
-          <label>
-            {{ field.name }}
-            <span v-if="field.required" class="required-mark">*</span>
-          </label>
-
-          <input
-            v-if="field.type === 'text'"
-            v-model="formData[field.name]"
-            type="text"
-            :placeholder="'请输入' + field.name"
-          />
-
-          <textarea
-            v-else-if="field.type === 'textarea'"
-            v-model="formData[field.name]"
-            :placeholder="'请输入' + field.name"
-          ></textarea>
-
-          <select v-else-if="field.type === 'select'" v-model="formData[field.name]">
-            <option value="">请选择</option>
-            <option v-for="opt in parseOptions(field.options)" :key="opt" :value="opt">{{ opt }}</option>
-          </select>
-
-          <div v-else-if="field.type === 'checkbox'" class="checkbox-group">
-            <label v-for="opt in parseOptions(field.options)" :key="opt" class="checkbox-label">
-              <input
-                type="checkbox"
-                :value="opt"
-                :checked="isChecked(field.name, opt)"
-                @change="toggleCheckbox(field.name, opt)"
-              />
-              <span>{{ opt }}</span>
+      <div class="scroll-area">
+        <div class="form-section">
+          <div v-for="field in event.form_fields" :key="field.name" class="form-item">
+            <label>
+              {{ field.name }}
+              <span v-if="field.required" class="required-mark">*</span>
             </label>
+
+            <input
+              v-if="field.type === 'text'"
+              v-model="formData[field.name]"
+              type="text"
+              :placeholder="'请输入' + field.name"
+            />
+
+            <textarea
+              v-else-if="field.type === 'textarea'"
+              v-model="formData[field.name]"
+              :placeholder="'请输入' + field.name"
+            ></textarea>
+
+            <select v-else-if="field.type === 'select'" v-model="formData[field.name]">
+              <option value="">请选择</option>
+              <option v-for="opt in parseOptions(field.options)" :key="opt" :value="opt">{{ opt }}</option>
+            </select>
+
+            <div v-else-if="field.type === 'checkbox'" class="checkbox-group">
+              <label v-for="opt in parseOptions(field.options)" :key="opt" class="checkbox-label">
+                <input
+                  type="checkbox"
+                  :value="opt"
+                  :checked="isChecked(field.name, opt)"
+                  @change="toggleCheckbox(field.name, opt)"
+                />
+                <span>{{ opt }}</span>
+              </label>
+            </div>
           </div>
+
+          <div v-if="formError" class="form-error-msg">{{ formError }}</div>
+
+          <button class="action-btn" :disabled="submitting" @click="handleSubmit">
+            {{ submitting ? '提交中...' : '提交信息' }}
+          </button>
         </div>
-
-        <div v-if="formError" class="form-error-msg">{{ formError }}</div>
-
-        <button class="action-btn" :disabled="submitting" @click="handleSubmit">
-          {{ submitting ? '提交中...' : '提交信息' }}
-        </button>
       </div>
     </template>
   </div>
@@ -184,6 +192,7 @@ onMounted(async () => {
   background: var(--gradient);
   padding: 0;
   color: #fff;
+  flex-shrink: 0;
 }
 
 .submit-header-bg {
@@ -256,12 +265,18 @@ onMounted(async () => {
   text-align: center;
 }
 
+.scroll-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 .success-section {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 80vh;
   padding: 40px 24px;
   text-align: center;
 }

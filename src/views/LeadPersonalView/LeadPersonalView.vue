@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="view-root">
     <!-- Header -->
     <div class="header">
       <ChevronLeft class="back-icon" @click="$router.push('/')" />
@@ -7,40 +7,42 @@
       <div class="spacer"></div>
     </div>
 
-    <!-- Status Tabs -->
-    <div class="tabs tabs-scroll">
-      <button
-        v-for="t in tabs" :key="t.value"
-        :class="{ active: currentTab === t.value }"
-        @click="switchTab(t.value)"
-      >{{ t.label }}</button>
-    </div>
-
-    <!-- Stats -->
-    <div class="stats-row">
-      <div v-for="s in tabStats" :key="s.key" class="stat-item">
-        <div class="num">{{ stats[s.key] || 0 }}</div>
-        <div class="label">{{ s.label }}</div>
+    <div class="scroll-area">
+      <!-- Status Tabs -->
+      <div class="tabs tabs-scroll">
+        <button
+          v-for="t in tabs" :key="t.value"
+          :class="{ active: currentTab === t.value }"
+          @click="switchTab(t.value)"
+        >{{ t.label }}</button>
       </div>
-    </div>
 
-    <!-- Lead List -->
-    <div v-if="loading" class="loading-text">加载中...</div>
-    <div v-else-if="leads.length === 0" class="empty-state">
-      <Users />
-      <div>暂无线索</div>
-    </div>
-    <div v-else class="lead-list">
-      <div v-for="lead in leads" :key="lead.id" class="lead-card">
-        <StatusBadge :status="lead.status" />
-        <div class="avatar">{{ lead.name?.charAt(0) || '?' }}</div>
-        <div class="info">
-          <div class="name">{{ lead.name }}</div>
-          <div class="phone">{{ maskPhone(lead.phone) }}</div>
-          <div v-if="lead.event_name" class="source">来源：{{ lead.event_name }}</div>
-          <div v-if="lead.claimed_at" class="time">领用时间：{{ formatDate(lead.claimed_at) }}</div>
+      <!-- Stats -->
+      <div class="stats-row">
+        <div v-for="s in tabStats" :key="s.key" class="stat-item">
+          <div class="num">{{ stats[s.key] || 0 }}</div>
+          <div class="label">{{ s.label }}</div>
         </div>
-        <button class="follow-btn" @click="openFollow(lead)">跟进</button>
+      </div>
+
+      <!-- Lead List -->
+      <div v-if="loading" class="loading-text">加载中...</div>
+      <div v-else-if="leads.length === 0" class="empty-state">
+        <Users />
+        <div>暂无线索</div>
+      </div>
+      <div v-else class="lead-list">
+        <div v-for="lead in leads" :key="lead.id" class="lead-card">
+          <StatusBadge :status="lead.status" />
+          <div class="avatar">{{ lead.name?.charAt(0) || '?' }}</div>
+          <div class="info">
+            <div class="name">{{ lead.name }}</div>
+            <div class="phone">{{ maskPhone(lead.phone) }}</div>
+            <div v-if="lead.event_name" class="source">来源：{{ lead.event_name }}</div>
+            <div v-if="lead.claimed_at" class="time">领用时间：{{ formatDate(lead.claimed_at) }}</div>
+          </div>
+          <button class="follow-btn" @click="openFollow(lead)">跟进</button>
+        </div>
       </div>
     </div>
 

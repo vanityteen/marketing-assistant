@@ -42,11 +42,13 @@ body {
 }
 
 #app {
-  max-width: 420px;
-  margin: 0 auto;
+  width: 100vw;
   background: var(--bg-white);
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Header */
@@ -96,7 +98,7 @@ body {
 }
 
 /* Lead Cards */
-.lead-list { padding: 0 16px 100px; }
+.lead-list { padding: 0 16px; }
 .lead-card {
   display: flex;
   align-items: center;
@@ -270,3 +272,21 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 .tabs-scroll::-webkit-scrollbar { display: none; }
+
+/* View layout - sticky header + scrollable content */
+.view-root {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+}
+.view-root > .header,
+.view-root > .home-header,
+.view-root > .submit-header {
+  flex-shrink: 0;
+}
+.scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}

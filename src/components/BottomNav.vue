@@ -1,5 +1,5 @@
 <template>
-  <nav class="bottom-nav">
+  <nav class="bottom-nav" v-show="visible">
     <router-link
       v-for="item in items"
       :key="item.path"
@@ -17,10 +17,16 @@
 </template>
 
 <script setup>
+import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { Home, BarChart, Users, Settings } from 'lucide-vue-next'
 
 const route = useRoute()
+
+const visible = computed(() => {
+  return !['/event/create', '/submit'].some(r => route.path.startsWith(r))
+    && !route.path.endsWith('/edit')
+})
 
 const items = [
   { path: '/', icon: 'home', label: '活动' },
@@ -42,13 +48,7 @@ function isActive(path) {
   padding: 12px 0;
   border-top: 1px solid var(--border);
   background: var(--bg-white);
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  max-width: 420px;
-  margin: 0 auto;
-  z-index: 99;
+  flex-shrink: 0;
 }
 .nav-item {
   display: flex;

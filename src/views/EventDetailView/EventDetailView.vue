@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="view-root">
     <!-- Header -->
     <div class="header">
       <ChevronLeft class="back-icon" @click="$router.push('/')" />
@@ -7,60 +7,62 @@
       <div class="spacer"></div>
     </div>
 
-    <div v-if="loading" class="loading-text">加载中...</div>
-    <template v-else-if="event">
-      <!-- QR Code -->
-      <div class="qr-section">
-        <div class="qr-code">
-          <img v-if="qrCode" :src="qrCode" alt="活动二维码" />
-          <div v-else class="placeholder">
-            <Table />
-            <span>活动二维码</span>
+    <div class="scroll-area">
+      <div v-if="loading" class="loading-text">加载中...</div>
+      <template v-else-if="event">
+        <!-- QR Code -->
+        <div class="qr-section">
+          <div class="qr-code">
+            <img v-if="qrCode" :src="qrCode" alt="活动二维码" />
+            <div v-else class="placeholder">
+              <Table />
+              <span>活动二维码</span>
+            </div>
+          </div>
+          <p v-if="!qrCode">正在生成二维码...</p>
+          <p v-else>用户扫码即可录入线索</p>
+        </div>
+
+        <!-- Info -->
+        <div class="info-section">
+          <div class="info-card">
+            <div class="row"><span class="label">活动名称</span><span class="value">{{ event.name }}</span></div>
+            <div class="row"><span class="label">活动时间</span><span class="value">{{ event.start_date }} 至 {{ event.end_date }}</span></div>
+            <div class="row"><span class="label">预算金额</span><span class="value budget">¥{{ formatNumber(event.budget) }}</span></div>
+            <div class="row"><span class="label">实际花销</span><span class="value expense">¥{{ formatNumber(event.expense) }}</span></div>
+            <div class="row"><span class="label">活动ROI</span><span class="value roi">{{ event.roi || 0 }}%</span></div>
           </div>
         </div>
-        <p v-if="!qrCode">正在生成二维码...</p>
-        <p v-else>用户扫码即可录入线索</p>
-      </div>
 
-      <!-- Info -->
-      <div class="info-section">
-        <div class="info-card">
-          <div class="row"><span class="label">活动名称</span><span class="value">{{ event.name }}</span></div>
-          <div class="row"><span class="label">活动时间</span><span class="value">{{ event.start_date }} 至 {{ event.end_date }}</span></div>
-          <div class="row"><span class="label">预算金额</span><span class="value budget">¥{{ formatNumber(event.budget) }}</span></div>
-          <div class="row"><span class="label">实际花销</span><span class="value expense">¥{{ formatNumber(event.expense) }}</span></div>
-          <div class="row"><span class="label">活动ROI</span><span class="value roi">{{ event.roi || 0 }}%</span></div>
+        <!-- Description -->
+        <div v-if="event.description" class="desc-section">
+          <h3>活动描述</h3>
+          <p>{{ event.description }}</p>
         </div>
-      </div>
 
-      <!-- Description -->
-      <div v-if="event.description" class="desc-section">
-        <h3>活动描述</h3>
-        <p>{{ event.description }}</p>
-      </div>
-
-      <!-- Leads -->
-      <div class="leads-section">
-        <div class="header-row">
-          <h3>关联线索</h3>
-          <a @click="$router.push('/leads/public')">查看全部 →</a>
-        </div>
-        <div v-if="!leads || leads.length === 0" class="empty-state" style="padding: 20px 0;">
-          <div>暂无关联线索</div>
-        </div>
-        <div v-for="lead in leads" :key="lead.id" class="lead-item">
-          <div class="avatar">{{ lead.name?.charAt(0) || '?' }}</div>
-          <div class="info">
-            <div class="name">{{ lead.name }}</div>
-            <div class="phone">{{ maskPhone(lead.phone) }}</div>
+        <!-- Leads -->
+        <div class="leads-section">
+          <div class="header-row">
+            <h3>关联线索</h3>
+            <a @click="$router.push('/leads/public')">查看全部 →</a>
           </div>
-          <StatusBadge :status="lead.status" />
+          <div v-if="!leads || leads.length === 0" class="empty-state" style="padding: 20px 0;">
+            <div>暂无关联线索</div>
+          </div>
+          <div v-for="lead in leads" :key="lead.id" class="lead-item">
+            <div class="avatar">{{ lead.name?.charAt(0) || '?' }}</div>
+            <div class="info">
+              <div class="name">{{ lead.name }}</div>
+              <div class="phone">{{ maskPhone(lead.phone) }}</div>
+            </div>
+            <StatusBadge :status="lead.status" />
+          </div>
         </div>
-      </div>
 
-      <!-- Share Button -->
-      <button v-if="qrCode" class="action-btn" @click="shareQR">分享活动二维码</button>
-    </template>
+        <!-- Share Button -->
+        <button v-if="qrCode" class="action-btn" @click="shareQR">分享活动二维码</button>
+      </template>
+    </div>
   </div>
 </template>
 

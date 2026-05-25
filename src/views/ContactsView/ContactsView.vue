@@ -1,40 +1,42 @@
 <template>
-  <div>
+  <div class="view-root">
     <div class="header">
       <ChevronLeft class="back-icon" @click="$router.push('/')" />
       <h1>通讯录中心</h1>
       <div class="spacer"></div>
     </div>
 
-    <div class="contact-search">
-      <Search />
-      <input type="text" v-model="search" placeholder="搜索线索/客户..." @input="onSearch" />
-    </div>
+    <div class="scroll-area">
+      <div class="contact-search">
+        <Search />
+        <input type="text" v-model="search" placeholder="搜索线索/客户..." @input="onSearch" />
+      </div>
 
-    <div class="special-tab">
-      <button @click="switchFilter('all')">
-        <CircleCheckBig />
-        全部线索 ({{ total }}条)
-      </button>
-    </div>
+      <div class="special-tab">
+        <button @click="switchFilter('all')">
+          <CircleCheckBig />
+          全部线索 ({{ total }}条)
+        </button>
+      </div>
 
-    <div class="tabs tabs-scroll">
-      <button v-for="s in statusFilters" :key="s.value" :class="{ active: currentFilter === s.value }" @click="switchFilter(s.value)">{{ s.label }}</button>
-    </div>
+      <div class="tabs tabs-scroll">
+        <button v-for="s in statusFilters" :key="s.value" :class="{ active: currentFilter === s.value }" @click="switchFilter(s.value)">{{ s.label }}</button>
+      </div>
 
-    <div v-if="loading" class="loading-text">加载中...</div>
-    <div v-else-if="contacts.length === 0" class="empty-state">
-      <Users />
-      <div>暂无联系人</div>
-    </div>
-    <div v-else class="contact-list">
-      <div v-for="contact in contacts" :key="contact.id" class="contact-item">
-        <div class="avatar">{{ contact.name?.charAt(0) || '?' }}</div>
-        <div class="info">
-          <div class="name">{{ contact.name }}</div>
-          <div class="phone">{{ maskPhone(contact.phone) }}</div>
+      <div v-if="loading" class="loading-text">加载中...</div>
+      <div v-else-if="contacts.length === 0" class="empty-state">
+        <Users />
+        <div>暂无联系人</div>
+      </div>
+      <div v-else class="contact-list">
+        <div v-for="contact in contacts" :key="contact.id" class="contact-item">
+          <div class="avatar">{{ contact.name?.charAt(0) || '?' }}</div>
+          <div class="info">
+            <div class="name">{{ contact.name }}</div>
+            <div class="phone">{{ maskPhone(contact.phone) }}</div>
+          </div>
+          <StatusBadge :status="contact.status" />
         </div>
-        <StatusBadge :status="contact.status" />
       </div>
     </div>
   </div>
@@ -128,7 +130,7 @@ onMounted(load)
 }
 .special-tab button svg { width: 18px; height: 18px; }
 
-.contact-list { padding: 0 16px 100px; }
+.contact-list { padding: 0 16px; }
 .contact-item {
   display: flex;
   align-items: center;

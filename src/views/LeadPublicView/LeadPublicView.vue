@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="view-root">
     <!-- Header -->
     <div class="header">
       <ChevronLeft class="back-icon" @click="$router.push('/')" />
@@ -7,39 +7,41 @@
       <div class="spacer"></div>
     </div>
 
-    <!-- Stats -->
-    <div class="stats-bar">
-      <div class="stat-item">
-        <div class="num">{{ stats.available }}</div>
-        <div class="label">可用线索</div>
-      </div>
-      <div class="stat-item">
-        <div class="num">{{ stats.today }}</div>
-        <div class="label">今日新增</div>
-      </div>
-      <div class="stat-item">
-        <div class="num">{{ stats.recovery }}</div>
-        <div class="label">待回收</div>
-      </div>
-    </div>
-
-    <!-- Lead List -->
-    <div v-if="loading" class="loading-text">加载中...</div>
-    <div v-else-if="leads.length === 0" class="empty-state">
-      <Users />
-      <div>暂无可用线索</div>
-    </div>
-    <div v-else class="lead-list">
-      <div v-for="lead in leads" :key="lead.id" class="lead-card">
-        <div class="avatar">{{ lead.name?.charAt(0) || '?' }}</div>
-        <div class="info">
-          <div class="name">{{ lead.name }}</div>
-          <div class="phone">{{ maskPhone(lead.phone) }}</div>
-          <div v-if="lead.event_name" class="source">来源：{{ lead.event_name }}</div>
+    <div class="scroll-area">
+      <!-- Stats -->
+      <div class="stats-bar">
+        <div class="stat-item">
+          <div class="num">{{ stats.available }}</div>
+          <div class="label">可用线索</div>
         </div>
-        <button class="claim-btn" :disabled="claimingId === lead.id" @click="claim(lead)">
-          {{ claimingId === lead.id ? '领用中...' : '领用' }}
-        </button>
+        <div class="stat-item">
+          <div class="num">{{ stats.today }}</div>
+          <div class="label">今日新增</div>
+        </div>
+        <div class="stat-item">
+          <div class="num">{{ stats.recovery }}</div>
+          <div class="label">待回收</div>
+        </div>
+      </div>
+
+      <!-- Lead List -->
+      <div v-if="loading" class="loading-text">加载中...</div>
+      <div v-else-if="leads.length === 0" class="empty-state">
+        <Users />
+        <div>暂无可用线索</div>
+      </div>
+      <div v-else class="lead-list">
+        <div v-for="lead in leads" :key="lead.id" class="lead-card">
+          <div class="avatar">{{ lead.name?.charAt(0) || '?' }}</div>
+          <div class="info">
+            <div class="name">{{ lead.name }}</div>
+            <div class="phone">{{ maskPhone(lead.phone) }}</div>
+            <div v-if="lead.event_name" class="source">来源：{{ lead.event_name }}</div>
+          </div>
+          <button class="claim-btn" :disabled="claimingId === lead.id" @click="claim(lead)">
+            {{ claimingId === lead.id ? '领用中...' : '领用' }}
+          </button>
+        </div>
       </div>
     </div>
   </div>
