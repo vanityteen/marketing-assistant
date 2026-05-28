@@ -7,24 +7,21 @@
       <div class="spacer"></div>
     </div>
 
+    <!-- Status Tabs -->
+    <div class="tabs tabs-scroll">
+      <button v-for="t in tabs" :key="t.value" :class="{ active: currentTab === t.value }"
+        @click="switchTab(t.value)">{{ t.label }}</button>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div v-for="s in tabStats" :key="s.key" class="stat-item">
+        <div class="num">{{ stats[s.key] || 0 }}</div>
+        <div class="label">{{ s.label }}</div>
+      </div>
+    </div>
+    
     <div class="scroll-area">
-      <!-- Status Tabs -->
-      <div class="tabs tabs-scroll">
-        <button
-          v-for="t in tabs" :key="t.value"
-          :class="{ active: currentTab === t.value }"
-          @click="switchTab(t.value)"
-        >{{ t.label }}</button>
-      </div>
-
-      <!-- Stats -->
-      <div class="stats-row">
-        <div v-for="s in tabStats" :key="s.key" class="stat-item">
-          <div class="num">{{ stats[s.key] || 0 }}</div>
-          <div class="label">{{ s.label }}</div>
-        </div>
-      </div>
-
       <!-- Lead List -->
       <div v-if="loading" class="loading-text">加载中...</div>
       <div v-else-if="leads.length === 0" class="empty-state">
@@ -33,26 +30,26 @@
       </div>
       <div v-else class="lead-list">
         <div v-for="lead in leads" :key="lead.id" class="lead-card">
-          <StatusBadge :status="lead.status" />
           <div class="avatar">{{ lead.name?.charAt(0) || '?' }}</div>
           <div class="info">
-            <div class="name">{{ lead.name }}</div>
+            <div class="name-wrapper">
+              <span class="name">{{ lead.name }}</span>
+              <StatusBadge :status="lead.status" class="lead-status" />
+            </div>
             <div class="phone">{{ maskPhone(lead.phone) }}</div>
             <div v-if="lead.event_name" class="source">来源：{{ lead.event_name }}</div>
             <div v-if="lead.claimed_at" class="time">领用时间：{{ formatDate(lead.claimed_at) }}</div>
           </div>
-          <button class="follow-btn" @click="openFollow(lead)">跟进</button>
+          <div class="actions">
+            <button class="follow-btn" @click="openFollow(lead)">跟进</button>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- Follow Modal -->
-    <FollowModal
-      :visible="showFollowModal"
-      :lead="selectedLead"
-      @close="showFollowModal = false"
-      @save="handleFollowSave"
-    />
+    <FollowModal :visible="showFollowModal" :lead="selectedLead" @close="showFollowModal = false"
+      @save="handleFollowSave" />
   </div>
 </template>
 
@@ -145,20 +142,72 @@ onMounted(load)
 .stats-row {
   display: flex;
   justify-content: space-around;
-  padding: 16px;
-  background: #f8f9fa;
+  padding: 20px 16px;
+  background: var(--gradient);
+  color: #fff;
+  flex-shrink: 0;
 }
-.stats-row .stat-item .num { color: var(--text); }
+
+.stats-row .stat-item {
+  text-align: center;
+}
+
+.stats-row .stat-item .num {
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.stats-row .stat-item .label {
+  font-size: 12px;
+  opacity: 0.85;
+  margin-top: 4px;
+}
+
+.scroll-area {
+  padding: 20px 16px;
+  background: #fcfcfc;
+}
+
+.lead-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.name-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  margin-left: 16px;
+  flex-shrink: 0;
+}
 
 .follow-btn {
   padding: 10px 20px;
-  border: 1px solid var(--primary);
-  color: var(--primary);
+  background: var(--gradient);
+  color: #fff;
   border-radius: 20px;
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
-  background: #fff;
+  border: none;
   white-space: nowrap;
+  flex-shrink: 0;
+  transition: opacity 0.2s, transform 0.15s;
+}
+
+.follow-btn:hover {
+  opacity: 0.9;
+}
+
+.follow-btn:active {
+  transform: scale(0.95);
 }
 </style>

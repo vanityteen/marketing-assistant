@@ -6,23 +6,23 @@
       <div class="spacer"></div>
     </div>
 
+    <div class="contact-search">
+      <Search />
+      <input type="text" v-model="search" placeholder="搜索线索/客户..." @input="onSearch" />
+    </div>
+
+    <div class="special-tab">
+      <button @click="switchFilter('all')">
+        <CircleCheckBig />
+        全部线索 ({{ total }}条)
+      </button>
+    </div>
+
+    <div class="tabs tabs-scroll">
+      <button v-for="s in statusFilters" :key="s.value" :class="{ active: currentFilter === s.value }" @click="switchFilter(s.value)">{{ s.label }}</button>
+    </div>
+    
     <div class="scroll-area">
-      <div class="contact-search">
-        <Search />
-        <input type="text" v-model="search" placeholder="搜索线索/客户..." @input="onSearch" />
-      </div>
-
-      <div class="special-tab">
-        <button @click="switchFilter('all')">
-          <CircleCheckBig />
-          全部线索 ({{ total }}条)
-        </button>
-      </div>
-
-      <div class="tabs tabs-scroll">
-        <button v-for="s in statusFilters" :key="s.value" :class="{ active: currentFilter === s.value }" @click="switchFilter(s.value)">{{ s.label }}</button>
-      </div>
-
       <div v-if="loading" class="loading-text">加载中...</div>
       <div v-else-if="contacts.length === 0" class="empty-state">
         <Users />
@@ -97,7 +97,9 @@ onMounted(load)
 .contact-search {
   margin: 12px 16px;
   padding: 12px 14px;
-  background: #f5f5f5;
+    background: var(--bg-white);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 1px var(--primary);
   border-radius: var(--radius-sm);
   display: flex;
   align-items: center;

@@ -7,23 +7,23 @@
       <div class="spacer"></div>
     </div>
 
-    <div class="scroll-area">
-      <!-- Stats -->
-      <div class="stats-bar">
-        <div class="stat-item">
-          <div class="num">{{ stats.available }}</div>
-          <div class="label">可用线索</div>
-        </div>
-        <div class="stat-item">
-          <div class="num">{{ stats.today }}</div>
-          <div class="label">今日新增</div>
-        </div>
-        <div class="stat-item">
-          <div class="num">{{ stats.recovery }}</div>
-          <div class="label">待回收</div>
-        </div>
+    <!-- Stats -->
+    <div class="stats-bar">
+      <div class="stat-item">
+        <div class="num">{{ stats.available }}</div>
+        <div class="label">可用线索</div>
       </div>
+      <div class="stat-item">
+        <div class="num">{{ stats.today }}</div>
+        <div class="label">今日新增</div>
+      </div>
+      <div class="stat-item">
+        <div class="num">{{ stats.recovery }}</div>
+        <div class="label">待回收</div>
+      </div>
+    </div>
 
+    <div class="scroll-area">
       <!-- Lead List -->
       <div v-if="loading" class="loading-text">加载中...</div>
       <div v-else-if="leads.length === 0" class="empty-state">
@@ -110,9 +110,21 @@ onMounted(load)
   background: var(--gradient);
   color: #fff;
 }
-.stat-item { text-align: center; }
-.stat-item .num { font-size: 24px; font-weight: 600; }
-.stat-item .label { font-size: 12px; opacity: 0.8; margin-top: 4px; }
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-item .num {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.stat-item .label {
+  font-size: 12px;
+  opacity: 0.8;
+  margin-top: 4px;
+}
 
 .claim-btn {
   padding: 10px 20px;
@@ -124,5 +136,23 @@ onMounted(load)
   cursor: pointer;
   border: none;
   white-space: nowrap;
+}
+
+.scroll-area {
+  background-color: #fcfcfc;
+  overflow-y: auto;
+  padding: 24px;
+}
+
+/* Lead Cards */
+.lead-card {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  background: var(--bg-white);
+  border-radius: var(--radius);
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  position: relative;
 }
 </style>

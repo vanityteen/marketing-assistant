@@ -156,7 +156,7 @@ onMounted(load)
 .info-section { padding: 16px; }
 .info-card {
   background: #f8f9fa;
-  border-radius: var(--radius);
+  border-radius: var(--radius-card);
   padding: 16px;
   margin-bottom: 12px;
 }

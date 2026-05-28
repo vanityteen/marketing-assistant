@@ -1,14 +1,12 @@
 <template>
   <div class="event-card-wrapper">
     <!-- Mobile: swipe-reveal actions (behind the card) -->
-    <div class="swipe-delete-action" :class="{ visible: showSwipeDelete }">
-      <button class="swipe-action-btn swipe-action-btn-danger" @click.stop="handleDelete">
-        <Trash2 :size="18" />
-        <span>删除</span>
-      </button>
-      <button class="swipe-action-btn" @click.stop="handleEdit">
+    <div class="swipe-delete-action" :class="{ visible: showSwipeDelete || swipeOffset > 0 }">
+      <button class="swipe-action-btn swipe-action-btn-edit" @click.stop="handleEdit" title="编辑">
         <Edit3 :size="18" />
-        <span>编辑</span>
+      </button>
+      <button class="swipe-action-btn swipe-action-btn-danger" @click.stop="handleDelete" title="删除">
+        <Trash2 :size="18" />
       </button>
     </div>
 
@@ -108,18 +106,6 @@ function onOtherDropdownOpen() {
   showDropdown.value = false
 }
 
-onMounted(() => {
-  document.addEventListener('close-event-dropdown', onOtherDropdownOpen)
-})
-
-onUnmounted(() => {
-  document.removeEventListener('close-event-dropdown', onOtherDropdownOpen)
-})
-
-function handleEdit() {
-  router.push(`/event/${props.event.id}/edit`)
-}
-
 // Swipe state
 const touchStartX = ref(0)
 const touchStartY = ref(0)
@@ -127,14 +113,47 @@ const swipeOffset = ref(0)
 const showSwipeDelete = ref(false)
 const isHorizontalSwipe = ref(false)
 const isDragging = ref(false)
-const SWIPE_THRESHOLD = 70
-const MAX_SWIPE = 160
+const SWIPE_THRESHOLD = 50
+const MAX_SWIPE = 130
+
+watch(showSwipeDelete, (val) => {
+  if (val) {
+    document.dispatchEvent(new CustomEvent('close-event-swipe', {
+      detail: { eventId: props.event.id }
+    }))
+  }
+})
+
+function onOtherSwipeOpen(e) {
+  if (e.detail?.eventId === props.event.id) return
+  showSwipeDelete.value = false
+  swipeOffset.value = 0
+}
+
+onMounted(() => {
+  document.addEventListener('close-event-dropdown', onOtherDropdownOpen)
+  document.addEventListener('close-event-swipe', onOtherSwipeOpen)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('close-event-dropdown', onOtherDropdownOpen)
+  document.removeEventListener('close-event-swipe', onOtherSwipeOpen)
+})
+
+function handleEdit() {
+  router.push(`/event/${props.event.id}/edit`)
+}
 
 function onTouchStart(e) {
   touchStartX.value = e.touches[0].clientX
   touchStartY.value = e.touches[0].clientY
   isHorizontalSwipe.value = false
   isDragging.value = false
+
+  // Close other swipe states immediately when touching a new card
+  document.dispatchEvent(new CustomEvent('close-event-swipe', {
+    detail: { eventId: props.event.id }
+  }))
 }
 
 function onTouchMove(e) {
@@ -142,7 +161,7 @@ function onTouchMove(e) {
   const currentY = e.touches[0].clientY
 
   if (showSwipeDelete.value) {
-    // Card revealed — allow right-swipe to close
+    // Card revealed (on the right) — allow right-swipe to close
     const deltaX = currentX - touchStartX.value
     if (deltaX > 5) {
       isDragging.value = true
@@ -152,9 +171,9 @@ function onTouchMove(e) {
     return
   }
 
-  // Normal left-swipe to reveal delete
+  // Normal left-swipe to reveal actions on the right
   const diffX = touchStartX.value - currentX
-  const diffY = touchStartY.value - currentY
+  const diffY = currentY - touchStartY.value
 
   if (!isHorizontalSwipe.value) {
     if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 10 && diffX > 0) {
@@ -235,7 +254,7 @@ function formatNumber(n) {
 <style scoped>
 .event-card-wrapper {
   position: relative;
-  border-radius: var(--radius);
+  border-radius: var(--radius-card);
 }
 
 /* ─── Mobile swipe action area (behind the card) ─── */
@@ -244,16 +263,17 @@ function formatNumber(n) {
   top: 0;
   right: 0;
   bottom: 0;
-  width: 160px;
+  width: 130px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
-  border-radius: 0 var(--radius) var(--radius) 0;
+  justify-content: flex-end;
+  padding-right: 12px;
+  background: transparent;
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.25s ease, visibility 0.25s ease;
-  gap: 0;
+  gap: 10px;
+  z-index: 0;
 }
 .swipe-delete-action.visible {
   opacity: 1;
@@ -264,6 +284,10 @@ function formatNumber(n) {
   .swipe-delete-action {
     display: none;
   }
+  .event-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
 }
 
 @media (max-width: 767px) {
@@ -273,28 +297,28 @@ function formatNumber(n) {
 }
 
 .swipe-action-btn {
-  flex: 1;
-  background: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
   border: none;
   color: #fff;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 4px;
-  cursor: pointer;
-  font-size: 12px;
-  padding: 12px 0;
-  transition: transform 0.15s, background 0.15s;
-  line-height: 1;
-  height: 100%;
   justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.15s, background 0.15s;
   -webkit-tap-highlight-color: transparent;
+  flex-shrink: 0;
 }
 .swipe-action-btn:active {
-  transform: scale(0.92);
+  transform: scale(0.9);
+}
+.swipe-action-btn-edit {
+  background: #007aff; /* Apple Blue */
 }
 .swipe-action-btn-danger {
-  background: linear-gradient(135deg, #ef4444, #dc2626);
+  background: #ff3b30; /* Apple Red */
 }
 
 /* ─── Swipeable card ─── */
@@ -302,25 +326,26 @@ function formatNumber(n) {
   position: relative;
   z-index: 1;
   background: var(--bg-white);
-  border-radius: var(--radius);
-  padding: 16px;
-  margin: 0 16px;
+  border-radius: var(--radius-card);
+  padding: 20px;
   box-shadow: var(--shadow);
   cursor: pointer;
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s ease;
   user-select: none;
   -webkit-user-select: none;
   -webkit-tap-highlight-color: transparent;
+  touch-action: pan-y;
 }
 .event-card.dragging {
   transition: none;
 }
 
+
 /* ─── PC dropdown (inside card) ─── */
 .card-dropdown {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 12px;
+  right: 12px;
   z-index: 3;
 }
 
@@ -330,18 +355,18 @@ function formatNumber(n) {
   border-radius: 50%;
   border: none;
   background: var(--bg-white);
-  color: #999;
+  color: var(--text-muted);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
   transition: color 0.2s, background 0.2s, transform 0.2s;
 }
 .dropdown-trigger:hover {
   background: #f5f5f5;
-  color: #666;
-  transform: scale(1.1);
+  color: var(--text);
+  transform: scale(1.05);
 }
 .dropdown-trigger:active {
   transform: scale(0.95);
@@ -354,8 +379,9 @@ function formatNumber(n) {
   margin-top: 4px;
   min-width: 120px;
   background: var(--bg-white);
-  border-radius: var(--radius);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border);
   overflow: hidden;
   z-index: 10;
 }
@@ -374,33 +400,43 @@ function formatNumber(n) {
   background: #f5f5f5;
 }
 .dropdown-item-danger {
-  color: #ef4444;
+  color: var(--accent);
 }
 .dropdown-item-danger:hover {
-  background: #fef2f2;
+  background: rgba(232, 33, 39, 0.05);
 }
 
 .event-card .status-badge {
   display: inline-block;
   padding: 4px 10px;
-  border-radius: 12px;
-  font-size: 12px;
-  margin-bottom: 8px;
+  border-radius: var(--radius);
+  font-size: 11px;
+  font-weight: 600;
+  margin-bottom: 12px;
 }
-.event-card h3 { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
-.event-card .info { display: flex; flex-wrap: wrap; gap: 12px; font-size: 13px; color: var(--text-secondary); }
-.event-card .info span { display: flex; align-items: center; gap: 4px; }
-.event-card .info svg { width: 14px; height: 14px; }
-.event-card .roi { font-size: 14px; font-weight: 600; color: #4caf50; margin-top: 8px; }
+.event-card h3 { font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 8px; letter-spacing: -0.4px; }
+.event-card .info { display: flex; flex-wrap: wrap; gap: 16px; font-size: 13px; color: var(--text-secondary); margin-bottom: 4px; }
+.event-card .info span { display: flex; align-items: center; gap: 6px; }
+.event-card .info svg { width: 14px; height: 14px; stroke-width: 2; color: var(--text-muted); }
+.event-card .roi { font-size: 13px; font-weight: 600; color: var(--status-active); margin-top: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
 
 .qr-entry {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   font-size: 12px;
-  color: var(--primary);
-  margin-top: 8px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-top: 12px;
+  padding: 6px 12px;
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: var(--radius);
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+.qr-entry:hover {
+  background: var(--primary);
+  color: #fff;
 }
 .qr-entry svg { width: 14px; height: 14px; }
 </style>

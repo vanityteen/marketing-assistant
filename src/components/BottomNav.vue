@@ -45,9 +45,12 @@ function isActive(path) {
 .bottom-nav {
   display: flex;
   justify-content: space-around;
-  padding: 12px 0;
+  padding: 14px 0 16px;
   border-top: 1px solid var(--border);
-  background: var(--bg-white);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.02);
   flex-shrink: 0;
 }
 .nav-item {
@@ -60,7 +63,25 @@ function isActive(path) {
   border: none;
   background: none;
   font-size: 11px;
+  font-weight: 500;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
 }
-.nav-item.active { color: var(--primary); }
-.nav-item svg { width: 24px; height: 24px; }
+.nav-item:hover {
+  color: var(--primary);
+  transform: translateY(-1px);
+}
+.nav-item.active {
+  color: var(--primary);
+  font-weight: 600;
+}
+.nav-item svg {
+  width: 20px;
+  height: 20px;
+  stroke-width: 2.2;
+  transition: transform 0.2s ease;
+}
+.nav-item.active svg {
+  transform: scale(1.05);
+}
 </style>
