@@ -87,17 +87,18 @@ function handleSave() {
 <style scoped>
 .status-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
 .status-btn {
-  padding: 12px;
-  border-radius: 10px;
-  border: 2px solid #e0e0e0;
+  padding: 10px;
+  border-radius: var(--radius);
+  border: 1px solid var(--hairline);
   font-size: 13px;
-  background: #fff;
+  background: var(--canvas);
   cursor: pointer;
-  color: var(--text-secondary);
+  color: var(--body);
+  transition: all 0.2s ease;
 }
 .status-btn.active {
   border-color: var(--primary);
-  background: #f5f7ff;
+  background: rgba(204, 120, 92, 0.08);
   color: var(--primary);
 }
 
@@ -105,38 +106,40 @@ function handleSave() {
 .star {
   width: 40px; height: 40px;
   border-radius: 50%;
-  border: 2px solid #e0e0e0;
+  border: 1px solid var(--hairline);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  color: var(--muted-soft);
 }
-.star svg { width: 20px; height: 20px; color: #ddd; }
-.star.active { border-color: #ffc107; background: #fff8e1; }
-.star.active svg { color: #ffc107; fill: #ffc107; }
+.star svg { width: 20px; height: 20px; }
+.star.active { border-color: var(--accent-amber); background: rgba(232, 165, 90, 0.08); color: var(--accent-amber); }
 
 .note-section textarea {
   width: 100%;
-  padding: 12px 14px;
-  border: 1px solid #e0e0e0;
-  border-radius: 10px;
+  padding: 10px 14px;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
   font-size: 14px;
   min-height: 100px;
   resize: none;
   outline: none;
   font-family: inherit;
+  color: var(--ink);
+  background: var(--canvas);
 }
 .note-section textarea:focus { border-color: var(--primary); }
 
-.modal-footer { display: flex; border-top: 1px solid #eee; }
+.modal-footer { display: flex; border-top: 1px solid var(--hairline); }
 .modal-footer button {
   flex: 1;
   padding: 16px;
   border: none;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 500;
   cursor: pointer;
 }
-.modal-footer .cancel-btn { background: #f5f5f5; color: var(--text-secondary); }
-.modal-footer .confirm-btn { background: var(--gradient); color: #fff; }
+.modal-footer .cancel-btn { background: var(--surface-soft); color: var(--body); }
+.modal-footer .confirm-btn { background: var(--primary); color: var(--on-primary); }
 </style>

@@ -45,12 +45,9 @@ function isActive(path) {
 .bottom-nav {
   display: flex;
   justify-content: space-around;
-  padding: 14px 0 16px;
-  border-top: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.02);
+  padding: 12px 0 16px;
+  border-top: 1px solid var(--hairline);
+  background: var(--canvas);
   flex-shrink: 0;
 }
 .nav-item {
@@ -58,30 +55,26 @@ function isActive(path) {
   flex-direction: column;
   align-items: center;
   gap: 4px;
-  color: var(--text-muted);
+  color: var(--muted);
   cursor: pointer;
   border: none;
   background: none;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: color 0.2s ease;
   text-decoration: none;
 }
 .nav-item:hover {
   color: var(--primary);
-  transform: translateY(-1px);
 }
 .nav-item.active {
   color: var(--primary);
-  font-weight: 600;
+  font-weight: 500;
 }
 .nav-item svg {
   width: 20px;
   height: 20px;
-  stroke-width: 2.2;
-  transition: transform 0.2s ease;
-}
-.nav-item.active svg {
-  transform: scale(1.05);
+  stroke-width: 2;
+  transition: color 0.2s ease;
 }
 </style>

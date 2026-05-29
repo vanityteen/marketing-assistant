@@ -285,8 +285,8 @@ function formatNumber(n) {
     display: none;
   }
   .event-card:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
+    border-color: var(--surface-cream-strong);
+    background: var(--surface-soft);
   }
 }
 
@@ -325,12 +325,12 @@ function formatNumber(n) {
 .event-card {
   position: relative;
   z-index: 1;
-  background: var(--bg-white);
+  background: var(--canvas);
   border-radius: var(--radius-card);
   padding: 20px;
-  box-shadow: var(--shadow);
+  border: 1px solid var(--hairline);
   cursor: pointer;
-  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s ease;
+  transition: border-color 0.2s ease;
   user-select: none;
   -webkit-user-select: none;
   -webkit-tap-highlight-color: transparent;
@@ -354,22 +354,17 @@ function formatNumber(n) {
   height: 32px;
   border-radius: 50%;
   border: none;
-  background: var(--bg-white);
-  color: var(--text-muted);
+  background: var(--surface-card);
+  color: var(--muted);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
-  transition: color 0.2s, background 0.2s, transform 0.2s;
+  transition: color 0.2s, background 0.2s;
 }
 .dropdown-trigger:hover {
-  background: #f5f5f5;
-  color: var(--text);
-  transform: scale(1.05);
-}
-.dropdown-trigger:active {
-  transform: scale(0.95);
+  background: var(--surface-cream-strong);
+  color: var(--ink);
 }
 
 .dropdown-menu {
@@ -378,10 +373,9 @@ function formatNumber(n) {
   right: 0;
   margin-top: 4px;
   min-width: 120px;
-  background: var(--bg-white);
+  background: var(--canvas);
   border-radius: var(--radius-card);
-  box-shadow: var(--shadow-lg);
-  border: 1px solid var(--border);
+  border: 1px solid var(--hairline);
   overflow: hidden;
   z-index: 10;
 }
@@ -393,50 +387,50 @@ function formatNumber(n) {
   padding: 10px 16px;
   font-size: 14px;
   cursor: pointer;
-  color: var(--text);
+  color: var(--ink);
   transition: background 0.15s;
 }
 .dropdown-item:hover {
-  background: #f5f5f5;
+  background: var(--surface-card);
 }
 .dropdown-item-danger {
-  color: var(--accent);
+  color: var(--error);
 }
 .dropdown-item-danger:hover {
-  background: rgba(232, 33, 39, 0.05);
+  background: rgba(198, 69, 69, 0.06);
 }
 
 .event-card .status-badge {
   display: inline-block;
-  padding: 4px 10px;
-  border-radius: var(--radius);
-  font-size: 11px;
-  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  font-size: 13px;
+  font-weight: 500;
   margin-bottom: 12px;
 }
-.event-card h3 { font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 8px; letter-spacing: -0.4px; }
-.event-card .info { display: flex; flex-wrap: wrap; gap: 16px; font-size: 13px; color: var(--text-secondary); margin-bottom: 4px; }
+.event-card h3 { font-size: 18px; font-weight: 500; color: var(--ink); margin-bottom: 8px; letter-spacing: 0; }
+.event-card .info { display: flex; flex-wrap: wrap; gap: 16px; font-size: 14px; color: var(--body); margin-bottom: 4px; }
 .event-card .info span { display: flex; align-items: center; gap: 6px; }
-.event-card .info svg { width: 14px; height: 14px; stroke-width: 2; color: var(--text-muted); }
-.event-card .roi { font-size: 13px; font-weight: 600; color: var(--status-active); margin-top: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+.event-card .info svg { width: 14px; height: 14px; stroke-width: 2; color: var(--muted); }
+.event-card .roi { font-size: 14px; font-weight: 500; color: var(--success); margin-top: 8px; }
 
 .qr-entry {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
-  color: var(--text-secondary);
+  color: var(--primary);
   margin-top: 12px;
   padding: 6px 12px;
-  background: rgba(0, 0, 0, 0.03);
+  background: var(--surface-card);
   border-radius: var(--radius);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 .qr-entry:hover {
   background: var(--primary);
-  color: #fff;
+  color: var(--on-primary);
 }
 .qr-entry svg { width: 14px; height: 14px; }
 </style>

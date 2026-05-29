@@ -106,9 +106,9 @@ onMounted(load)
 .stats-bar {
   display: flex;
   justify-content: space-around;
-  padding: 16px;
-  background: var(--gradient);
-  color: #fff;
+  padding: 20px 16px;
+  background: var(--surface-dark);
+  color: var(--on-dark);
 }
 
 .stat-item {
@@ -117,29 +117,37 @@ onMounted(load)
 
 .stat-item .num {
   font-size: 24px;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .stat-item .label {
-  font-size: 12px;
-  opacity: 0.8;
+  font-size: 13px;
+  opacity: 0.7;
   margin-top: 4px;
 }
 
 .claim-btn {
   padding: 10px 20px;
-  background: var(--gradient);
-  color: #fff;
-  border-radius: 20px;
-  font-size: 13px;
+  background: var(--primary);
+  color: var(--on-primary);
+  border-radius: var(--radius);
+  font-size: 14px;
   font-weight: 500;
   cursor: pointer;
   border: none;
   white-space: nowrap;
+  transition: background 0.2s ease;
+}
+.claim-btn:hover {
+  background: var(--primary-active);
+}
+.claim-btn:disabled {
+  background: var(--primary-disabled);
+  color: var(--muted);
 }
 
 .scroll-area {
-  background-color: #fcfcfc;
+  background-color: var(--canvas);
   overflow-y: auto;
   padding: 24px;
 }
@@ -149,10 +157,10 @@ onMounted(load)
   display: flex;
   align-items: center;
   padding: 16px;
-  background: var(--bg-white);
-  border-radius: var(--radius);
+  background: var(--canvas);
+  border-radius: var(--radius-card);
   margin-bottom: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--hairline);
   position: relative;
 }
 </style>

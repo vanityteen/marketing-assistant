@@ -90,45 +90,45 @@ onMounted(loadEvents)
 }
 
 .home-header {
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  color: var(--text);
+  background: var(--canvas);
+  color: var(--ink);
   padding: 20px 24px 16px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--hairline);
   flex-shrink: 0;
 }
 .home-header h1 {
   font-size: 22px;
-  font-weight: 700;
-  letter-spacing: -0.6px;
-  color: var(--text);
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--ink);
   text-align: left;
 }
 
 .search-box {
-  background: var(--bg-white);
-  border-color: var(--primary);
-  box-shadow: 0 0 0 1px var(--primary);
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
   border-radius: var(--radius);
-  padding: 10px 18px;
+  padding: 10px 14px;
   margin: 16px 24px 8px;
   display: flex;
   align-items: center;
   flex-shrink: 0;
-  transition: all 0.2s ease;
+  transition: border-color 0.2s ease;
 }
-.search-box svg { width: 18px; height: 18px; opacity: 0.4; color: var(--text-secondary); }
+.search-box:focus-within {
+  border-color: var(--primary);
+}
+.search-box svg { width: 18px; height: 18px; opacity: 0.4; color: var(--muted); }
 .search-box input {
   background: transparent;
   border: none;
-  color: var(--text);
+  color: var(--ink);
   font-size: 14px;
   flex: 1;
   margin-left: 8px;
   outline: none;
 }
-.search-box input::placeholder { color: var(--text-muted); }
+.search-box input::placeholder { color: var(--muted-soft); }
 
 .events-list {
   display: flex;
@@ -143,30 +143,29 @@ onMounted(loadEvents)
   flex-shrink: 0;
 }
 .filter-tabs button {
-  padding: 8px 18px;
+  padding: 8px 14px;
   border-radius: var(--radius);
   border: none;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
-  background: rgba(0, 0, 0, 0.05);
-  color: var(--text-secondary);
+  background: transparent;
+  color: var(--muted);
   cursor: pointer;
   white-space: nowrap;
   flex-shrink: 0;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s ease;
 }
 .filter-tabs button:hover {
-  background: rgba(0, 0, 0, 0.08);
-  color: var(--text);
+  background: var(--surface-card);
+  color: var(--ink);
 }
 .filter-tabs button.active {
-  background: var(--primary);
-  color: #fff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: var(--surface-card);
+  color: var(--ink);
 }
 
 .scroll-area {
-  background-color: var(--bg);
+  background-color: var(--canvas);
   flex: 1;
   overflow-y: auto;
   padding: 0 24px 24px;
@@ -191,19 +190,16 @@ onMounted(loadEvents)
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8px 24px rgba(23, 26, 32, 0.2);
   z-index: 100;
   cursor: pointer;
   border: none;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background 0.2s ease;
 }
 .create-btn:hover {
-  background: var(--primary-dark);
-  transform: scale(1.05) translateY(-2px);
-  box-shadow: 0 12px 30px rgba(23, 26, 32, 0.35);
+  background: var(--primary-active);
 }
 .create-btn:active {
-  transform: scale(0.95) translateY(0);
+  background: var(--primary-active);
 }
-.create-btn svg { width: 24px; height: 24px; stroke: #fff; stroke-width: 2.2; fill: none; }
+.create-btn svg { width: 24px; height: 24px; stroke: var(--on-primary); stroke-width: 2; fill: none; }
 </style>

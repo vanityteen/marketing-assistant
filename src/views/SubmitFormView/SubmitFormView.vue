@@ -189,9 +189,9 @@ onMounted(async () => {
 
 <style scoped>
 .submit-header {
-  background: var(--gradient);
+  background: var(--surface-dark);
   padding: 0;
-  color: #fff;
+  color: var(--on-dark);
   flex-shrink: 0;
 }
 
@@ -208,19 +208,19 @@ onMounted(async () => {
 }
 
 .submit-header h1 {
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 22px;
+  font-weight: 500;
   margin-bottom: 8px;
-  color: #fff;
+  color: var(--on-dark);
 }
 
 .submit-header p {
   font-size: 14px;
-  opacity: 0.8;
+  opacity: 0.7;
 }
 
 .required-mark {
-  color: #e53935;
+  color: var(--error);
   margin-left: 2px;
 }
 
@@ -235,19 +235,19 @@ onMounted(async () => {
   align-items: center;
   gap: 6px;
   padding: 10px 16px;
-  border: 1px solid #e0e0e0;
-  border-radius: var(--radius-sm);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
   cursor: pointer;
   font-size: 14px;
-  color: var(--text-secondary);
+  color: var(--body);
   transition: all 0.2s;
-  background: var(--bg-white);
+  background: var(--canvas);
 }
 
 .checkbox-label:has(input:checked) {
   border-color: var(--primary);
   color: var(--primary);
-  background: #f5f7ff;
+  background: rgba(204, 120, 92, 0.08);
 }
 
 .checkbox-label input {
@@ -256,10 +256,10 @@ onMounted(async () => {
 }
 
 .form-error-msg {
-  background: #fce4ec;
-  color: #c62828;
+  background: rgba(198, 69, 69, 0.08);
+  color: var(--error);
   padding: 12px 16px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius);
   font-size: 14px;
   margin-bottom: 16px;
   text-align: center;
@@ -284,7 +284,7 @@ onMounted(async () => {
 .success-icon {
   width: 80px;
   height: 80px;
-  background: #e8f5e9;
+  background: rgba(93, 184, 114, 0.1);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -295,18 +295,18 @@ onMounted(async () => {
 .success-icon svg {
   width: 40px;
   height: 40px;
-  color: #2e7d32;
+  color: var(--success);
 }
 
 .success-title {
   font-size: 22px;
-  font-weight: 700;
-  color: var(--text);
+  font-weight: 500;
+  color: var(--ink);
   margin-bottom: 8px;
 }
 
 .success-desc {
   font-size: 15px;
-  color: var(--text-secondary);
+  color: var(--body);
 }
 </style>

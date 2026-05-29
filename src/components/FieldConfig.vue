@@ -51,12 +51,12 @@
         </div>
         <div class="modal-body">
           <div class="field-type-list" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
-            <div v-for="t in fieldTypes" :key="t.type" class="field-type-item" @click="addField(t.type)" style="padding: 16px; background: #f8f9fa; border-radius: 12px; text-align: center; cursor: pointer;">
+            <div v-for="t in fieldTypes" :key="t.type" class="field-type-item" @click="addField(t.type)" style="padding: 16px; background: var(--surface-card); border-radius: var(--radius-card); text-align: center; cursor: pointer;">
               <FileText v-if="t.type === 'text' || t.type === 'textarea'" style="width: 32px; height: 32px; margin-bottom: 8px;" />
               <Search v-if="t.type === 'select'" style="width: 32px; height: 32px; margin-bottom: 8px;" />
               <Check v-if="t.type === 'checkbox'" style="width: 32px; height: 32px; margin-bottom: 8px;" />
               <div class="label" style="font-size: 14px; font-weight: 500;">{{ t.label }}</div>
-              <div class="desc" style="font-size: 12px; color: var(--text-muted);">{{ t.desc }}</div>
+              <div class="desc" style="font-size: 13px; color: var(--muted);">{{ t.desc }}</div>
             </div>
           </div>
         </div>
@@ -136,15 +136,15 @@ function updateField(index, key, value) {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 500;
   margin-bottom: 16px;
 }
 .section-title svg { width: 18px; height: 18px; color: var(--primary); }
 
 .field-card {
-  background: #f8f9fa;
-  border-radius: var(--radius-sm);
+  background: var(--surface-card);
+  border-radius: var(--radius);
   padding: 16px;
   margin-bottom: 12px;
 }
@@ -155,16 +155,17 @@ function updateField(index, key, value) {
   margin-bottom: 12px;
 }
 .field-name { font-size: 14px; font-weight: 500; }
-.field-type { font-size: 12px; color: var(--text-muted); }
+.field-type { font-size: 13px; color: var(--muted); }
 .field-actions { display: flex; gap: 8px; }
 .field-actions button {
   width: 28px; height: 28px;
   border: none;
-  border-radius: 6px;
-  background: var(--bg-white);
+  border-radius: var(--radius-sm);
+  background: var(--canvas);
   font-size: 14px;
   cursor: pointer;
-  color: var(--text-secondary);
+  color: var(--body);
+  border: 1px solid var(--hairline);
 }
 .field-card .form-item { margin-bottom: 12px; }
 .field-card .form-item:last-child { margin-bottom: 0; }
@@ -175,11 +176,16 @@ function updateField(index, key, value) {
   justify-content: center;
   gap: 8px;
   padding: 16px;
-  border: 2px dashed #ddd;
+  border: 1px dashed var(--hairline);
   border-radius: var(--radius);
   margin-top: 12px;
   cursor: pointer;
-  color: var(--text-muted);
+  color: var(--muted);
+  transition: all 0.2s ease;
+}
+.add-field-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
 }
 .add-field-btn svg { width: 20px; height: 20px; }
 </style>

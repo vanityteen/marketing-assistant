@@ -6,57 +6,99 @@
 }
 
 :root {
-  --primary: #171a20; /* Tesla Charcoal Black */
-  --primary-dark: #000000;
-  --accent: #e82127;  /* Tesla Red */
-  --gradient: #171a20;   /* Tesla Charcoal Black sophisticated solid fill */
-  
-  --text: #171a20;
-  --text-secondary: #393c41; /* Tesla secondary grey */
-  --text-muted: #5c5e62;     /* Tesla tertiary grey */
-  --text-light: #e2e4e4;
-  
-  --bg: #f4f4f4;       /* Tesla classic light silver-gray background */
-  --bg-white: #ffffff;
-  --border: rgba(0, 0, 0, 0.08);       /* Clean thin border */
-  --border-light: rgba(0, 0, 0, 0.04);
-  
-  --shadow: 0 8px 16px rgba(0, 0, 0, 0.02);
-  --shadow-lg: 0 16px 32px rgba(0, 0, 0, 0.06);
-  --glass-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
-  
-  --radius: 9999px;   /* Pill/Capsule style buttons */
-  --radius-sm: 8px;   /* Clean subtle rounding for input fields */
-  --radius-card: 12px;/* Standard card roundedness */
-  --radius-lg: 30px;  /* Modals/large objects */
+  /* Brand Coral — the signature Anthropic accent */
+  --primary: #cc785c;
+  --primary-active: #a9583e;
+  --primary-disabled: #e6dfd8;
 
-  --status-active-bg: rgba(46, 125, 50, 0.08);
-  --status-active: #2e7d32;
-  --status-ended-bg: rgba(0, 0, 0, 0.05);
-  --status-ended: #5c5e62;
-  --status-pending-bg: rgba(239, 108, 0, 0.08);
-  --status-pending: #ef6c00;
-  --status-contacted-bg: rgba(21, 101, 192, 0.08);
-  --status-contacted: #1565c0;
-  --status-negotiating-bg: rgba(46, 125, 50, 0.08);
-  --status-negotiating: #2e7d32;
+  /* Ink / Text */
+  --ink: #141413;
+  --body-strong: #252523;
+  --body: #3d3d3a;
+  --muted: #6c6a64;
+  --muted-soft: #8e8b82;
+  --text: #141413;
+  --text-secondary: #3d3d3a;
+  --text-muted: #6c6a64;
+  --text-light: #faf9f5;
+
+  /* Surfaces */
+  --canvas: #faf9f5;
+  --bg: #faf9f5;
+  --bg-white: #faf9f5;
+  --surface-soft: #f5f0e8;
+  --surface-card: #efe9de;
+  --surface-cream-strong: #e8e0d2;
+  --surface-dark: #181715;
+  --surface-dark-elevated: #252320;
+  --surface-dark-soft: #1f1e1b;
+
+  /* On-colors */
+  --on-primary: #ffffff;
+  --on-dark: #faf9f5;
+  --on-dark-soft: #a09d96;
+
+  /* Accent companions */
+  --accent-teal: #5db8a6;
+  --accent-amber: #e8a55a;
+  --accent: #cc785c;
+
+  /* Semantic */
+  --success: #5db872;
+  --warning: #d4a017;
+  --error: #c64545;
+
+  /* Hairlines */
+  --hairline: #e6dfd8;
+  --hairline-soft: #ebe6df;
+  --border: #e6dfd8;
+  --border-light: #ebe6df;
+
+  /* Shadows — minimal, color-block first philosophy */
+  --shadow: none;
+  --shadow-lg: none;
+  --glass-shadow: none;
+
+  /* Border radius — hierarchical scale */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius: 8px;
+  --radius-card: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 9999px;
+
+  /* Gradient — now a solid coral fill */
+  --gradient: #cc785c;
+  --primary-dark: #a9583e;
+
+  /* Status colors */
+  --status-active-bg: rgba(93, 184, 114, 0.1);
+  --status-active: #3d8b40;
+  --status-ended-bg: rgba(108, 106, 100, 0.08);
+  --status-ended: #6c6a64;
+  --status-pending-bg: rgba(204, 120, 92, 0.1);
+  --status-pending: #cc785c;
+  --status-contacted-bg: rgba(93, 184, 166, 0.1);
+  --status-contacted: #3d8b7a;
+  --status-negotiating-bg: rgba(93, 184, 114, 0.1);
+  --status-negotiating: #3d8b40;
   --status-converted-bg: rgba(106, 27, 154, 0.08);
   --status-converted: #6a1b9a;
-  --status-abandoned-bg: rgba(198, 40, 40, 0.08);
-  --status-abandoned: #c62828;
+  --status-abandoned-bg: rgba(198, 69, 69, 0.08);
+  --status-abandoned: #c64545;
 }
 
 body {
-  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: var(--bg);
-  color: var(--text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--canvas);
+  color: var(--ink);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 #app {
   width: 100vw;
-  background: var(--bg);
+  background: var(--canvas);
   height: 100vh;
   overflow: hidden;
   position: relative;
@@ -64,22 +106,19 @@ body {
   flex-direction: column;
 }
 
-/* Header */
+/* ─── Header ─── */
 .header {
   display: flex;
   align-items: center;
   padding: 16px 24px;
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border);
+  background: var(--canvas);
+  border-bottom: 1px solid var(--hairline);
   position: relative;
-  transition: all 0.3s ease;
 }
 .header .back-icon {
   width: 24px; height: 24px;
   cursor: pointer;
-  color: var(--text);
+  color: var(--ink);
   transition: transform 0.2s ease;
 }
 .header .back-icon:hover {
@@ -89,15 +128,14 @@ body {
   flex: 1;
   text-align: center;
   font-size: 16px;
-  font-weight: 600;
-  letter-spacing: -0.4px;
-  color: var(--text);
-  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--ink);
 }
 .header .btn {
   font-size: 14px;
   font-weight: 500;
-  color: var(--accent);
+  color: var(--primary);
   cursor: pointer;
   transition: opacity 0.2s ease;
 }
@@ -106,78 +144,75 @@ body {
 }
 .header .spacer { width: 24px; }
 
-/* Filter & Tabs - Tesla Capsule Style */
+/* ─── Filter & Tabs ─── */
 .tabs {
   display: flex;
   padding: 16px 24px;
   gap: 8px;
 }
 .tabs button {
-  padding: 8px 18px;
+  padding: 8px 14px;
   border-radius: var(--radius);
   border: none;
   font-size: 13px;
   font-weight: 500;
-  background: rgba(0, 0, 0, 0.05);
-  color: var(--text-secondary);
+  background: transparent;
+  color: var(--muted);
   cursor: pointer;
   white-space: nowrap;
   flex-shrink: 0;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s ease;
 }
 .tabs button:hover {
-  background: rgba(0, 0, 0, 0.08);
-  color: var(--text);
+  background: var(--surface-card);
+  color: var(--ink);
 }
 .tabs button.active {
-  background: var(--primary);
-  color: #fff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: var(--surface-card);
+  color: var(--ink);
 }
 
-/* Lead Cards */
+/* ─── Lead Cards ─── */
 .lead-card {
   display: flex;
   align-items: center;
   padding: 18px 20px;
-  background: var(--bg-white);
+  background: var(--canvas);
   border-radius: var(--radius-card);
   margin-bottom: 12px;
-  border: 1px solid rgba(0, 0, 0, 0.02);
-  box-shadow: var(--shadow);
+  border: 1px solid var(--hairline);
   position: relative;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: background 0.2s ease;
 }
 .lead-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+  background: var(--surface-soft);
 }
 
 .avatar {
   width: 46px; height: 46px;
-  background: #f4f4f4;
-  color: var(--text);
-  border: 1px solid var(--border);
+  background: var(--surface-card);
+  color: var(--ink);
+  border: 1px solid var(--hairline);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
   flex-shrink: 0;
 }
 .lead-card .info { flex: 1; margin-left: 16px; min-width: 0; }
-.lead-card .name { font-size: 16px; font-weight: 600; color: var(--text); letter-spacing: -0.3px; }
-.lead-card .phone { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
-.lead-card .source { font-size: 12px; font-weight: 500; color: var(--text-secondary); margin-top: 4px; }
-.lead-card .time { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+.lead-card .name { font-size: 16px; font-weight: 500; color: var(--ink); letter-spacing: 0; }
+.lead-card .phone { font-size: 14px; color: var(--muted); margin-top: 4px; }
+.lead-card .source { font-size: 13px; font-weight: 500; color: var(--body); margin-top: 4px; }
+.lead-card .time { font-size: 13px; color: var(--muted); margin-top: 4px; }
 
-/* Status Badges */
+/* ─── Status Badges ─── */
 .status-badge {
-  font-size: 11px;
-  font-weight: 600;
-  padding: 4px 10px;
-  border-radius: var(--radius);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
   white-space: nowrap;
 }
 .status-active { background: var(--status-active-bg); color: var(--status-active); }
@@ -188,32 +223,31 @@ body {
 .status-converted { background: var(--status-converted-bg); color: var(--status-converted); }
 .status-abandoned { background: var(--status-abandoned-bg); color: var(--status-abandoned); }
 
-/* Form Elements */
-.form-section { padding: 24px; background: var(--bg-white); border-radius: var(--radius-card); margin: 16px; box-shadow: var(--shadow); }
+/* ─── Form Elements ─── */
+.form-section { padding: 24px; background: var(--canvas); border-radius: var(--radius-card); margin: 16px; border: 1px solid var(--hairline); }
 .form-item { margin-bottom: 20px; }
-.form-item label { display: block; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; color: var(--text-muted); }
+.form-item label { display: block; font-size: 14px; font-weight: 500; margin-bottom: 8px; color: var(--body); }
 .form-item input, .form-item textarea, .form-item select {
   width: 100%;
-  padding: 12px 16px;
-  border: 1px solid transparent;
-  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
   font-size: 15px;
   outline: none;
   font-family: inherit;
-  color: var(--text);
-  background: rgba(0, 0, 0, 0.03);
-  transition: all 0.2s ease;
+  color: var(--ink);
+  background: var(--canvas);
+  transition: border-color 0.2s ease;
 }
 .form-item input:focus, .form-item textarea:focus, .form-item select:focus {
-  background: var(--bg-white);
   border-color: var(--primary);
-  box-shadow: 0 0 0 1px var(--primary);
+  box-shadow: 0 0 0 3px rgba(204, 120, 92, 0.15);
 }
 .form-item textarea { min-height: 120px; resize: none; }
 .date-row { display: flex; gap: 12px; }
 .date-row .form-item { flex: 1; }
 
-/* Toast */
+/* ─── Toast ─── */
 .toast-container {
   position: fixed;
   bottom: 100px;
@@ -223,22 +257,22 @@ body {
   pointer-events: none;
 }
 .toast-message {
-  background: rgba(23, 26, 32, 0.95);
-  color: #fff;
+  background: rgba(24, 23, 21, 0.95);
+  color: var(--on-dark);
   padding: 12px 28px;
   border-radius: var(--radius);
   font-size: 14px;
   font-weight: 500;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-  letter-spacing: -0.2px;
+  box-shadow: 0 4px 16px rgba(20, 20, 19, 0.12);
+  letter-spacing: 0;
 }
 
-/* Modal */
+/* ─── Modal ─── */
 .modal-overlay {
   display: none;
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   z-index: 200;
@@ -252,20 +286,19 @@ body {
 .modal {
   width: 90%;
   max-width: 360px;
-  background: var(--bg-white);
+  background: var(--canvas);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
   overflow: hidden;
-  border: 1px solid var(--border);
+  border: 1px solid var(--hairline);
 }
 .modal-top-header {
   padding: 24px 20px 16px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--hairline);
   text-align: center;
   position: relative;
 }
-.modal-top-header h2 { font-size: 18px; font-weight: 600; letter-spacing: -0.4px; }
-.modal-top-header p { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+.modal-top-header h2 { font-size: 18px; font-weight: 500; letter-spacing: 0; color: var(--ink); }
+.modal-top-header p { font-size: 14px; color: var(--muted); margin-top: 4px; }
 .modal-close-btn {
   position: absolute;
   top: 16px;
@@ -273,60 +306,58 @@ body {
   width: 32px; height: 32px;
   border: none;
   border-radius: 50%;
-  background: rgba(0, 0, 0, 0.05);
+  background: var(--surface-card);
   font-size: 18px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  color: var(--muted);
   transition: background 0.2s;
 }
 .modal-close-btn:hover {
-  background: rgba(0, 0, 0, 0.08);
+  background: var(--surface-cream-strong);
 }
 
 .modal-body { padding: 24px; }
 
-/* Tesla Capsule Action Button */
+/* ─── Action Button ─── */
 .action-btn {
   margin: 16px;
-  padding: 14px;
+  padding: 12px 20px;
   background: var(--primary);
-  color: #fff;
+  color: var(--on-primary);
   border-radius: var(--radius);
   text-align: center;
   font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
+  font-weight: 500;
   cursor: pointer;
   border: none;
   display: block;
   width: calc(100% - 32px);
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 12px rgba(23, 26, 32, 0.15);
+  height: 40px;
+  line-height: 1;
+  transition: background 0.2s ease;
 }
 .action-btn:hover {
-  background: var(--primary-dark);
-  transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(23, 26, 32, 0.25);
+  background: var(--primary-active);
 }
 .action-btn:active {
-  transform: translateY(0);
+  background: var(--primary-active);
 }
 
-/* Loading & Empty states */
+/* ─── Loading & Empty ─── */
 .loading-text {
   text-align: center;
   padding: 60px 16px;
-  color: var(--text-muted);
+  color: var(--muted);
   font-size: 14px;
   font-weight: 500;
 }
 .empty-state {
   text-align: center;
   padding: 80px 16px;
-  color: var(--text-muted);
+  color: var(--muted);
   font-size: 14px;
 }
 .empty-state svg {
@@ -336,14 +367,14 @@ body {
   color: var(--primary);
 }
 
-/* Scrollable tabs */
+/* ─── Scrollable tabs ─── */
 .tabs-scroll {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
 .tabs-scroll::-webkit-scrollbar { display: none; }
 
-/* View layout - sticky header + scrollable content */
+/* ─── View layout ─── */
 .view-root {
   display: flex;
   flex-direction: column;

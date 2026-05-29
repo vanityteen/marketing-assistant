@@ -32,6 +32,15 @@ const { toastState } = useToast()
   display: flex;
   flex-direction: column;
 }
+.toast-message {
+  background: var(--surface-dark);
+  color: var(--on-dark);
+  padding: 12px 28px;
+  border-radius: var(--radius);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0;
+}
 .toast-enter-active { animation: toastIn 0.3s ease; }
 .toast-leave-active { animation: toastOut 0.3s ease; }
 @keyframes toastIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }

@@ -143,8 +143,8 @@ onMounted(load)
   display: flex;
   justify-content: space-around;
   padding: 20px 16px;
-  background: var(--gradient);
-  color: #fff;
+  background: var(--surface-dark);
+  color: var(--on-dark);
   flex-shrink: 0;
 }
 
@@ -154,19 +154,19 @@ onMounted(load)
 
 .stats-row .stat-item .num {
   font-size: 24px;
-  font-weight: 700;
-  color: #fff;
+  font-weight: 500;
+  color: var(--on-dark);
 }
 
 .stats-row .stat-item .label {
-  font-size: 12px;
-  opacity: 0.85;
+  font-size: 13px;
+  opacity: 0.7;
   margin-top: 4px;
 }
 
 .scroll-area {
   padding: 20px 16px;
-  background: #fcfcfc;
+  background: var(--canvas);
 }
 
 .lead-list {
@@ -191,23 +191,23 @@ onMounted(load)
 
 .follow-btn {
   padding: 10px 20px;
-  background: var(--gradient);
-  color: #fff;
-  border-radius: 20px;
-  font-size: 13px;
+  background: var(--primary);
+  color: var(--on-primary);
+  border-radius: var(--radius);
+  font-size: 14px;
   font-weight: 500;
   cursor: pointer;
   border: none;
   white-space: nowrap;
   flex-shrink: 0;
-  transition: opacity 0.2s, transform 0.15s;
+  transition: background 0.2s;
 }
 
 .follow-btn:hover {
-  opacity: 0.9;
+  background: var(--primary-active);
 }
 
 .follow-btn:active {
-  transform: scale(0.95);
+  background: var(--primary-active);
 }
 </style>

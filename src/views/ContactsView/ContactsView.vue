@@ -96,15 +96,18 @@ onMounted(load)
 <style scoped>
 .contact-search {
   margin: 12px 16px;
-  padding: 12px 14px;
-    background: var(--bg-white);
-  border-color: var(--primary);
-  box-shadow: 0 0 0 1px var(--primary);
-  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
   display: flex;
   align-items: center;
+  transition: border-color 0.2s ease;
 }
-.contact-search svg { width: 18px; height: 18px; opacity: 0.5; flex-shrink: 0; }
+.contact-search:focus-within {
+  border-color: var(--primary);
+}
+.contact-search svg { width: 18px; height: 18px; opacity: 0.5; flex-shrink: 0; color: var(--muted); }
 .contact-search input {
   flex: 1;
   background: transparent;
@@ -112,23 +115,28 @@ onMounted(load)
   margin-left: 10px;
   font-size: 14px;
   outline: none;
+  color: var(--ink);
 }
 
 .special-tab { margin: 0 16px; }
 .special-tab button:not(.inline) {
   width: 100%;
   padding: 14px;
-  background: var(--gradient);
-  color: #fff;
+  background: var(--surface-dark);
+  color: var(--on-dark);
   border-radius: var(--radius);
   border: none;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 500;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   cursor: pointer;
+  transition: background 0.2s ease;
+}
+.special-tab button:not(.inline):hover {
+  background: var(--surface-dark-elevated);
 }
 .special-tab button svg { width: 18px; height: 18px; }
 
@@ -137,10 +145,10 @@ onMounted(load)
   display: flex;
   align-items: center;
   padding: 14px 0;
-  border-bottom: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--hairline-soft);
 }
 .contact-item .avatar { width: 40px; height: 40px; font-size: 15px; }
 .contact-item .info { flex: 1; margin-left: 12px; min-width: 0; }
 .contact-item .name { font-size: 14px; font-weight: 500; }
-.contact-item .phone { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+.contact-item .phone { font-size: 13px; color: var(--muted); margin-top: 2px; }
 </style>

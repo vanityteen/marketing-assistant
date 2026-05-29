@@ -122,47 +122,51 @@ onMounted(load)
 .user-section {
   display: flex;
   align-items: center;
-  padding: 20px 16px;
-  background: var(--gradient);
-  color: #fff;
+  padding: 24px 16px;
+  background: var(--surface-dark);
+  color: var(--on-dark);
 }
 .user-avatar.large {
   width: 60px; height: 60px;
-  background: rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.12);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 24px;
-  font-weight: 600;
+  font-weight: 500;
 }
 .user-info { margin-left: 16px; }
-.user-info .user-name { font-size: 18px; font-weight: 600; color: #fff; }
-.user-info .user-role { font-size: 14px; opacity: 0.8; color: #fff; }
+.user-info .user-name { font-size: 18px; font-weight: 500; color: var(--on-dark); }
+.user-info .user-role { font-size: 14px; opacity: 0.7; color: var(--on-dark); }
 
 .menu-section { padding: 16px; }
 .menu-item {
   display: flex;
   align-items: center;
   padding: 16px;
-  background: var(--bg-white);
-  border-radius: var(--radius);
+  background: var(--canvas);
+  border-radius: var(--radius-card);
   margin-bottom: 12px;
-  box-shadow: var(--shadow);
+  border: 1px solid var(--hairline);
   cursor: pointer;
+  transition: background 0.2s ease;
+}
+.menu-item:hover {
+  background: var(--surface-soft);
 }
 .menu-item svg:first-child { width: 22px; height: 22px; color: var(--primary); flex-shrink: 0; }
 .menu-item .text { flex: 1; margin-left: 14px; }
 .menu-item .title { font-size: 15px; font-weight: 500; }
-.menu-item .desc { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
-.menu-item .arrow { width: 16px; height: 16px; opacity: 0.4; color: var(--text-muted); }
+.menu-item .desc { font-size: 13px; color: var(--muted); margin-top: 2px; }
+.menu-item .arrow { width: 16px; height: 16px; opacity: 0.4; color: var(--muted); }
 
 .setting-card {
   padding: 16px;
-  background: var(--bg-white);
+  background: var(--canvas);
   border-radius: var(--radius-card);
   margin: 0 16px 12px;
-  box-shadow: var(--shadow);
+  border: 1px solid var(--hairline);
 }
 .setting-card .card-title { font-size: 15px; font-weight: 500; margin-bottom: 16px; }
 
@@ -172,20 +176,21 @@ onMounted(load)
   align-items: center;
   padding: 12px 0;
 }
-.recovery-setting .label { font-size: 14px; color: var(--text-secondary); }
+.recovery-setting .label { font-size: 14px; color: var(--body); }
 .recovery-setting .options { display: flex; gap: 8px; }
 .recovery-setting .option {
   padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 13px;
-  background: #f0f0f0;
-  color: var(--text-secondary);
+  border-radius: var(--radius);
+  font-size: 14px;
+  background: var(--surface-card);
+  color: var(--body);
   cursor: pointer;
   border: none;
+  transition: all 0.2s ease;
 }
 .recovery-setting .option.active {
   background: var(--primary);
-  color: #fff;
+  color: var(--on-primary);
 }
 
 .role-section { padding: 16px; }
@@ -194,31 +199,36 @@ onMounted(load)
 .role-options button {
   flex: 1;
   padding: 14px;
-  border-radius: 10px;
-  border: 2px solid #e0e0e0;
+  border-radius: var(--radius);
+  border: 1px solid var(--hairline);
   font-size: 14px;
   cursor: pointer;
-  background: var(--bg-white);
-  color: var(--text-secondary);
+  background: var(--canvas);
+  color: var(--body);
+  transition: all 0.2s ease;
 }
 .role-options button.active {
   border-color: var(--primary);
-  background: #f5f7ff;
+  background: rgba(204, 120, 92, 0.08);
   color: var(--primary);
 }
 
 .logout-btn {
   margin: 20px 16px;
   padding: 14px;
-  background: #f5f5f5;
-  color: var(--text-secondary);
+  background: var(--surface-soft);
+  color: var(--body);
   border-radius: var(--radius);
   text-align: center;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 500;
   cursor: pointer;
   border: none;
   display: block;
   width: calc(100% - 32px);
+  transition: background 0.2s ease;
+}
+.logout-btn:hover {
+  background: var(--surface-card);
 }
 </style>
