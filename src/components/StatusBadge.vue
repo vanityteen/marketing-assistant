@@ -10,6 +10,7 @@ const props = defineProps({
 })
 
 const labels = {
+  not_started: '未开启',
   active: '进行中',
   ended: '已结束',
   pending: '待联系',

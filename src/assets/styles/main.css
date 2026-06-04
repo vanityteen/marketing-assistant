@@ -72,6 +72,8 @@
   --primary-dark: #a9583e;
 
   /* Status colors */
+  --status-not_started-bg: rgba(66, 133, 244, 0.1);
+  --status-not_started: #356ac3;
   --status-active-bg: rgba(93, 184, 114, 0.1);
   --status-active: #3d8b40;
   --status-ended-bg: rgba(108, 106, 100, 0.08);
@@ -215,6 +217,7 @@ body {
   border-radius: var(--radius-pill);
   white-space: nowrap;
 }
+.status-not_started { background: var(--status-not_started-bg); color: var(--status-not_started); }
 .status-active { background: var(--status-active-bg); color: var(--status-active); }
 .status-ended { background: var(--status-ended-bg); color: var(--status-ended); }
 .status-pending { background: var(--status-pending-bg); color: var(--status-pending); }
@@ -278,8 +281,8 @@ body {
   z-index: 200;
   align-items: center;
   justify-content: center;
-  max-width: 420px;
-  margin: 0 auto;
+  /* max-width: 420px;
+  margin: 0 auto; */
 }
 .modal-overlay.active { display: flex; }
 

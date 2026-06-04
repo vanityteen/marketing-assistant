@@ -26,7 +26,7 @@
         <div>暂无活动</div>
       </div>
       <div v-else style="display: flex; flex-direction: column; row-gap: 12px;" class="events-list">
-        <EventCard v-for="event in events" :key="event.id" :event="event" :showQR="event.status === 'active'" @deleted="loadEvents"/>
+        <EventCard v-for="event in events" :key="event.id" :event="event" :showQR="getEffectiveStatus(event) === 'active'" @deleted="loadEvents"/>
       </div>
     </div>
 
@@ -42,6 +42,7 @@ import { ref, onMounted } from 'vue'
 import { useEventStore } from '@/stores/event'
 import EventCard from '@/components/EventCard.vue'
 import { Search, Calendar, Plus } from 'lucide-vue-next'
+import { getEffectiveStatus } from '@/utils/event'
 
 const eventStore = useEventStore()
 
@@ -51,6 +52,7 @@ let searchTimer = null
 
 const filters = [
   { value: 'all', label: '全部' },
+  { value: 'not_started', label: '未开启' },
   { value: 'active', label: '进行中' },
   { value: 'ended', label: '已结束' },
 ]
@@ -61,10 +63,13 @@ const loading = ref(false)
 async function loadEvents() {
   loading.value = true
   const params = {}
-  if (currentFilter.value !== 'all') params.status = currentFilter.value
   if (search.value) params.search = search.value
   const res = await eventStore.fetchEvents(params)
-  events.value = res.events || []
+  let list = res.events || []
+  if (currentFilter.value !== 'all') {
+    list = list.filter(e => getEffectiveStatus(e) === currentFilter.value)
+  }
+  events.value = list
   loading.value = false
 }
 

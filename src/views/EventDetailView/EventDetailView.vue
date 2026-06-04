@@ -26,6 +26,7 @@
         <!-- Info -->
         <div class="info-section">
           <div class="info-card">
+            <div class="row"><span class="label">活动状态</span><span class="value"><StatusBadge :status="effectiveStatus" /></span></div>
             <div class="row"><span class="label">活动名称</span><span class="value">{{ event.name }}</span></div>
             <div class="row"><span class="label">活动时间</span><span class="value">{{ event.start_date }} 至 {{ event.end_date }}</span></div>
             <div class="row"><span class="label">预算金额</span><span class="value budget">¥{{ formatNumber(event.budget) }}</span></div>
@@ -61,25 +62,35 @@
 
         <!-- Share Button -->
         <button v-if="qrCode" class="action-btn" @click="shareQR">分享活动二维码</button>
+        <!-- End Activity Button -->
+        <button v-if="effectiveStatus === 'active'" class="action-btn end-btn" @click="endActivity">结束活动</button>
       </template>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useEventStore } from '@/stores/event'
 import StatusBadge from '@/components/StatusBadge.vue'
 import { ChevronLeft, Table } from 'lucide-vue-next'
+import { getEffectiveStatus } from '@/utils/event'
+import { useToast } from '@/composables/useToast'
 
 const route = useRoute()
 const eventStore = useEventStore()
+const toast = useToast()
 
 const event = ref(null)
 const leads = ref([])
 const qrCode = ref(null)
 const loading = ref(true)
+
+const effectiveStatus = computed(() => {
+  if (!event.value) return ''
+  return getEffectiveStatus(event.value)
+})
 
 async function load() {
   loading.value = true
@@ -96,6 +107,17 @@ async function load() {
     if (qrRes.qrcode) qrCode.value = qrRes.qrcode
   } catch (e) {
     // QR generation failed silently
+  }
+}
+
+async function endActivity() {
+  if (!confirm('确定要提前结束该活动吗？')) return
+  try {
+    await eventStore.updateEvent(route.params.id, { status: 'ended' })
+    if (event.value) event.value.status = 'ended'
+    toast.showToast('活动已结束')
+  } catch {
+    toast.showToast('操作失败，请重试')
   }
 }
 
@@ -197,4 +219,11 @@ onMounted(load)
 .lead-item .info { flex: 1; margin-left: 12px; }
 .lead-item .name { font-size: 14px; font-weight: 500; }
 .lead-item .phone { font-size: 13px; color: var(--muted); }
+
+.end-btn {
+  background: var(--error);
+}
+.end-btn:hover {
+  background: #a83838;
+}
 </style>

@@ -36,7 +36,7 @@
         </div>
       </div>
 
-      <StatusBadge :status="event.status" />
+      <StatusBadge :status="getEffectiveStatus(event)" />
       <h3>{{ event.name }}</h3>
       <div class="info">
         <span>
@@ -68,6 +68,7 @@ import StatusBadge from './StatusBadge.vue'
 import { Calendar, DollarSign, BarChart, Table, Trash2, MoreHorizontal, Edit3 } from 'lucide-vue-next'
 import { useEventStore } from '@/stores/event'
 import { useToast } from '@/composables/useToast'
+import { getEffectiveStatus } from '@/utils/event'
 
 const props = defineProps({
   event: { type: Object, required: true },
