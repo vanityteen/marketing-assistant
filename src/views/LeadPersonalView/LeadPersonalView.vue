@@ -115,13 +115,14 @@ function openFollow(lead) {
 
 async function handleFollowSave(data) {
   if (!selectedLead.value) return
+  const isAbandoned = data.status === 'abandoned'
   await leadStore.followUp(selectedLead.value.id, {
     status: data.status,
     rating: data.rating,
     note: data.note,
   })
   showFollowModal.value = false
-  showToast('跟进记录已保存')
+  showToast(isAbandoned ? '线索已放弃，已返回公共线索池' : '跟进记录已保存')
   load()
 }
 

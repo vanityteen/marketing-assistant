@@ -26,11 +26,11 @@
           </div>
           <ChevronRight class="arrow" />
         </div>
-        <div class="menu-item" @click="$router.push('/leads/personal')">
+        <div class="menu-item" @click="$router.push('/contacts')">
           <Users />
           <div class="text">
-            <div class="title">我的线索</div>
-            <div class="desc">查看我的线索和客户</div>
+            <div class="title">通讯录</div>
+            <div class="desc">查看和管理我的线索与客户</div>
           </div>
           <ChevronRight class="arrow" />
         </div>

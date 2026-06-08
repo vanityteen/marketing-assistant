@@ -83,7 +83,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { api } from '@/api'
@@ -143,23 +143,37 @@ async function handleSubmit() {
   submitting.value = true
   try {
     const fields = event.value.form_fields
-    const nameField = fields.find(f => f.name === '姓名')
-    const phoneField = fields.find(f => f.name === '手机号码')
+
+    // 模糊匹配姓名和手机号字段（不 hardcode 字段名）
+    function isNameField(name: string) {
+      return name.includes('姓名') || name.includes('名字')
+    }
+    function isPhoneField(name: string) {
+      return name.includes('手机') || name.includes('电话') || name.includes('联系')
+    }
+
+    const nameField = fields.find(f => isNameField(f.name))
+    const phoneField = fields.find(f => isPhoneField(f.name))
 
     const payload = {
       event_id: event.value.id,
-      name: nameField ? (formData['姓名'] || '') : '',
-      phone: phoneField ? (formData['手机号码'] || '') : '',
-      custom_data: {},
+      name: nameField ? (formData[nameField.name] || '') : '',
+      phone: phoneField ? (formData[phoneField.name] || '') : '',
+      custom_data: {} as Record<string, unknown>,
     }
 
     for (const field of fields) {
-      if (field.name === '姓名' || field.name === '手机号码') continue
+      if (nameField && field.name === nameField.name) continue
+      if (phoneField && field.name === phoneField.name) continue
       payload.custom_data[field.name] = formData[field.name] ?? ''
     }
 
-    await api.submitLead(payload)
-    submitted.value = true
+    const res = await api.submitLead(payload)
+    if (res.error) {
+      formError.value = res.error as string
+    } else {
+      submitted.value = true
+    }
   } catch (e) {
     formError.value = '提交失败，请稍后重试'
   } finally {

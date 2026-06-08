@@ -32,11 +32,13 @@
       </div>
       <div v-else class="lead-list">
         <div v-for="lead in leads" :key="lead.id" class="lead-card">
-          <div class="avatar">{{ lead.name?.charAt(0) || '?' }}</div>
-          <div class="info">
-            <div class="name">{{ lead.name }}</div>
-            <div class="phone">{{ maskPhone(lead.phone) }}</div>
-            <div v-if="lead.event_name" class="source">来源：{{ lead.event_name }}</div>
+          <div class="lead-main">
+            <div class="avatar">{{ lead.name?.charAt(0) || '?' }}</div>
+            <div class="info">
+              <div class="name">{{ lead.name }}</div>
+              <div class="phone">{{ maskPhone(lead.phone) }}</div>
+              <div v-if="lead.event_name" class="source">来源：{{ lead.event_name }}</div>
+            </div>
           </div>
           <button class="claim-btn" :disabled="claimingId === lead.id" @click="claim(lead)">
             {{ claimingId === lead.id ? '领用中...' : '领用' }}
@@ -65,12 +67,24 @@ const claimingId = ref(null)
 
 async function load() {
   loading.value = true
-  const res = await leadStore.fetchPublicLeads()
-  leads.value = res.leads || []
-  if (res.stats) {
-    stats.available = res.stats.available
-    stats.today = res.stats.today
-    stats.recovery = res.stats.recovery
+  const [publicRes, personalRes] = await Promise.all([
+    leadStore.fetchPublicLeads(),
+    leadStore.fetchPersonalLeads().catch(() => ({ leads: [] })),
+  ])
+  const allPublic = publicRes.leads || []
+  const personalLeads = personalRes.leads || []
+
+  // 当前用户正在活跃持有的线索 ID（排除已放弃的，后端已自动包含已放弃线索到公共池）
+  const activeClaimedIds = new Set(
+    personalLeads.filter(l => l.status !== 'abandoned').map(l => l.id)
+  )
+
+  // 从公共池中过滤掉活跃持有的线索
+  leads.value = allPublic.filter(l => !activeClaimedIds.has(l.id))
+  if (publicRes.stats) {
+    stats.available = publicRes.stats.available
+    stats.today = publicRes.stats.today
+    stats.recovery = publicRes.stats.recovery
   }
   loading.value = false
 }
@@ -80,11 +94,9 @@ async function claim(lead) {
   try {
     const res = await leadStore.claimLead(lead.id)
     if (res.lead) {
-      showToast('线索领用成功')
-      // Remove from public list
-      leads.value = leads.value.filter(l => l.id !== lead.id)
-      stats.available--
-      setTimeout(() => router.push('/leads/personal'), 1000)
+      showToast('线索已领用并添加到通讯录')
+      // 不影响公共池中的数据，不从此列表中移除
+      setTimeout(() => router.push('/contacts'), 1000)
     } else if (res.error) {
       showToast(res.error)
     }
@@ -162,5 +174,22 @@ onMounted(load)
   margin-bottom: 12px;
   border: 1px solid var(--hairline);
   position: relative;
+}
+
+.lead-main {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  cursor: pointer;
+  min-width: 0;
+  transition: opacity 0.15s ease;
+}
+
+.lead-main:hover {
+  opacity: 0.75;
+}
+
+.lead-main:active {
+  opacity: 0.6;
 }
 </style>
