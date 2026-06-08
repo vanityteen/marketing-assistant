@@ -4,7 +4,13 @@ import { api } from '@/api'
 interface Lead {
   id: number
   name: string
+  phone?: string
   status?: string
+  event_name?: string
+  event_id?: number
+  custom_data?: Record<string, unknown>
+  created_at?: string
+  claimed_at?: string
   [key: string]: unknown
 }
 
@@ -34,6 +40,7 @@ interface LeadState {
   publicStats: PublicStats
   personalLeads: Lead[]
   personalStats: PersonalStats
+  currentLead: Lead | null
   followUps: FollowUp[]
 }
 
@@ -43,6 +50,7 @@ export const useLeadStore = defineStore('lead', {
     publicStats: { available: 0, today: 0, recovery: 0 },
     personalLeads: [],
     personalStats: { pending: 0, contacted: 0, negotiating: 0, converted: 0, abandoned: 0 },
+    currentLead: null,
     followUps: [],
   }),
   actions: {
@@ -69,6 +77,11 @@ export const useLeadStore = defineStore('lead', {
     async fetchFollowUps(id: number | string) {
       const res = await api.getFollowUps(id)
       if (res.followUps) this.followUps = res.followUps as FollowUp[]
+      return res
+    },
+    async fetchLead(id: number | string) {
+      const res = await api.getLead(id)
+      if (res.lead) this.currentLead = res.lead as Lead
       return res
     },
     async submitLead(data: any) {

@@ -57,6 +57,7 @@ export const api = {
     const qs = new URLSearchParams(params).toString()
     return request<ApiResponse>(`/leads/personal${qs ? '?' + qs : ''}`)
   },
+  getLead: (id: number | string) => request<ApiResponse>(`/leads/${id}`),
   claimLead: (id: number | string) => request<ApiResponse>(`/leads/${id}/claim`, { method: 'POST' }),
   followLead: (id: number | string, data: any) => request<ApiResponse>(`/leads/${id}/follow`, { method: 'POST', body: data }),
   getFollowUps: (id: number | string) => request<ApiResponse>(`/leads/${id}/follow-ups`),

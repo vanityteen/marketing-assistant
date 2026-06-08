@@ -65,7 +65,10 @@ const form = reactive({
   end_date: '',
   budget: 0,
   description: '',
-  form_fields: [],
+  form_fields: [
+    { _key: Date.now() + 1, label: '姓名', type: 'text', required: true, options: undefined },
+    { _key: Date.now() + 2, label: '联系方式', type: 'text', required: true, options: undefined },
+  ],
 })
 
 onMounted(async () => {
