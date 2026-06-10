@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "http://hot.cherrybless.com/api/:path*"
+    }
+  ]
+}
