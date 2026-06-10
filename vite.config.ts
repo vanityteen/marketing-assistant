@@ -14,7 +14,8 @@ export default defineConfig({
     port: 5277,
     proxy: {
       '/api': {
-        target: 'http://localhost:3000',
+        // target: 'http://localhost:3000',
+        target: 'http://hot.cherrybless.com',
         changeOrigin: true,
       },
     },
